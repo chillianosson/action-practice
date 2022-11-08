@@ -8,10 +8,10 @@ on:
 
 jobs:
   call-workflow:
-    uses: octo-org/action-practice/.github/workflows/reuseable-workflow.yml@main
+    uses: chillianosson/action-practice/.github/workflows/reuseable-workflow.yml@main
 
   call-workflow-passing-data:
-    uses: octo-org/action-practice/.github/workflows/reuseable-workflow.yml@new-pull-request-branch
+    uses: chillianosson/action-practice/.github/workflows/reuseable-workflow.yml@new-pull-request-branch
     with:
       config-path: .github/labeler.yml
     secrets:
