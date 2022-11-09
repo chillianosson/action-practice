@@ -1,4 +1,4 @@
-name: Reusable workflow example
+name: e2e quality gate
 
 on:
   workflow_call:
@@ -16,5 +16,5 @@ jobs:
     steps:
     - uses: actions/labeler@v4
       with:
-        repo-token: ${{ secrets.token }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         configuration-path: ${{ inputs.config-path }}
