@@ -25,14 +25,15 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Trigger Workflow has successfully run
-      - name: Extract branch name
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Invoke workflow
+      - name: Invoke workflow without inputs
         uses: benc-uk/workflow-dispatch@v1
-          with:
-            workflow: manual-workflow.yml
-            inputs: '{ "name": "Cilly willy", "branch":${{ steps.extract_branch.outputs.branch }} }'
+        with:
+          workflow: manual-workflow.yml
+          inputs: '{ "name": "Cilly willy" }'
