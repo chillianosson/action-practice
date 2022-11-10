@@ -30,7 +30,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Trigger Workflow has successfully run
-      - name: Invoke workflow without inputs
+      - name: Invoke workflow with branch name
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: manual-workflow.yml

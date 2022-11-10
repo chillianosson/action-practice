@@ -1,6 +1,7 @@
 # This is a basic workflow that is manually triggered
 
-name: Manual workflow
+name: Triggered workflow to pass branch to new repo
+
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -33,3 +34,10 @@ jobs:
       run: echo "Manual Workflow successfully for ${{ github.event.inputs.name }}"
     - name: Name branch
       run: echo "Branch is ${{ github.event.inputs.branch }}"
+    - name: Invoke workflow in another repo and pass the branch name
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: chillianosson/action-practice-2
+          workflow: receiving-workflow.yml
+          inputs: '{ "branch": "${{ env.branch }}" }'
+
