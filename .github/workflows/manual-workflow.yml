@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
+      branch:
+        required: true
+        default: "no branch given"
       name:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Person to greet'
