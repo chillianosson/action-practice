@@ -30,6 +30,9 @@ jobs:
         run: echo Trigger Workflow has successfully run
       - name: Invoke workflow without inputs
         uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: manual-workflow.yml
-          inputs: '{ "name": "Cilly willy" }'
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+          with:
+            workflow: manual-workflow.yml
+            inputs: '{ "name": "Cilly willy", "branch":${{ steps.extract_branch.outputs.branch }} }'

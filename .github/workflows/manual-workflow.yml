@@ -28,3 +28,5 @@ jobs:
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Manual Workflow successfully for ${{ github.event.inputs.name }}"
+    - name: Name branch
+      run: echo "Branch is ${{ github.event.inputs.branch }}"
