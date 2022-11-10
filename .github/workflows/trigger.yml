@@ -28,5 +28,3 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Trigger Workflow has successfully run
-      - name: Workflow Dispatch
-        uses: benc-uk/workflow-dispatch@v1.2.2
