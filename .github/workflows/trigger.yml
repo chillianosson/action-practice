@@ -7,7 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   # Change to pull_request for purposes of final demo
   push:
-    branches: [ "main" ]
   #   pull_request:
   #      branches: [ "main" ]
 
