@@ -32,3 +32,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: manual-workflow.yml
+          inputs: '{ "name": "Cilly willy" }'
