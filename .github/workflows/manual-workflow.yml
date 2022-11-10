@@ -40,8 +40,8 @@ jobs:
     #       workflow: receiving-workflow.yml
     #       inputs: '{ "branch": "${{ env.branch }}" }'
     - name: Invoke workflow in another repo with inputs
-        uses: benc-uk/workflow-dispatch@v1
-        with:
+      uses: benc-uk/workflow-dispatch@v1
+      with:
         workflow: receiving-workflow.yml
         inputs: '{ "branch": "${{ env.branch }}" }'
 
