@@ -28,11 +28,11 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Trigger Workflow has successfully run
-      - name: Invoke workflow without inputs
-        uses: benc-uk/workflow-dispatch@v1
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
+      - name: Invoke workflow
+        uses: benc-uk/workflow-dispatch@v1
           with:
             workflow: manual-workflow.yml
             inputs: '{ "name": "Cilly willy", "branch":${{ steps.extract_branch.outputs.branch }} }'
