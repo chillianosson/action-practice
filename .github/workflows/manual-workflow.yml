@@ -43,5 +43,6 @@ jobs:
       uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: receiving-workflow.yml
+        repo: chillianosson/action-practice-2
         inputs: '{ "branch": "${{ env.branch }}" }'
 
