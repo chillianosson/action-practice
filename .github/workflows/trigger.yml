@@ -31,4 +31,4 @@ jobs:
       - name: Invoke workflow without inputs
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: chillianosson/action-practice/.github/workflows/manual-workflow.yml
+          workflow: manual-workflow.yml
