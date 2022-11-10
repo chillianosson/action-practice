@@ -44,5 +44,6 @@ jobs:
       with:
         workflow: receiving-workflow.yml
         repo: chillianosson/action-practice-2
-        inputs: '{ "branch": "${{ env.branch }}" }'
+        repo-token: ${{ secrets.CROSSREPOACCESS }}
+        inputs: '{ "branch": "${{ github.event.inputs.branch }}" }'
 
