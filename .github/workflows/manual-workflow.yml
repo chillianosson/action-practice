@@ -10,7 +10,7 @@ on:
     inputs:
       branch:
         required: true
-        default: "no branch given"
+        default: "no branch was given"
       name:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Person to greet'
