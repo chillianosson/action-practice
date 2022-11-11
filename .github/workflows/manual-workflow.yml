@@ -33,12 +33,6 @@ jobs:
       run: echo "Manual Workflow successfully for ${{ github.event.inputs.name }}"
     - name: Name branch
       run: echo "Branch is ${{ github.event.inputs.branch }}"
-    # - name: Invoke workflow in another repo and pass the branch name
-    #     uses: benc-uk/workflow-dispatch@v1
-    #     with:
-    #       repo: chillianosson/action-practice-2
-    #       workflow: receiving-workflow.yml
-    #       inputs: '{ "branch": "${{ env.branch }}" }'
     - name: Invoke workflow in another repo with inputs
       uses: benc-uk/workflow-dispatch@v1
       with:
