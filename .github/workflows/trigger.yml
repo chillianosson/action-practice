@@ -37,12 +37,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const refName = ${{ env.CI_ACTION_REF_NAME }};
-            const repoPath = ${{ env.CI_REPOSITORY_SLUG }};
-            const branchName = ${{ env.CI_HEAD_REF }};
-            console.log('refName is ', refName);
-            console.log('repoPath is ', repoPath);
-            console.log('branchName is ', branchName);
+            const refName = ${{ env.CI_ACTION_REF_NAME }}
+            const repoPath = ${{ env.CI_REPOSITORY_SLUG }}
+            const branchName = ${{ env.CI_HEAD_REF }}
+            console.log('refName is ', refName)
+            console.log('repoPath is ', repoPath)
+            console.log('branchName is ', branchName)
 
       # - name: trigger quality-gate
       #   uses: "a string"
