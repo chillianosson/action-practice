@@ -24,6 +24,6 @@ jobs:
   #           });
 
   trigger-quality-gate:
-    uses: ./action-practice/.github/workflows/quality-gate.yml
+    uses: chillianosson/action-practice/.github/actions/quality-gate.yml@main
     with:
       e2e-branch: "Passed input data branch name from triggerrrrrrr"
