@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: GitHub Environment Variables Action
-        uses: chillianosson/github-env-vars-action
+        uses: chillianosson/github-env-vars-action@v2
 
       - name: log values
         run: echo "ref name is ${{env.CI_ACTION_REF_NAME}} repo path is ${{ env.CI_REPOSITORY_SLUG }} head ref is ${{ env.CI_HEAD_REF }}"
