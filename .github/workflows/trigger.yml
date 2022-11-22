@@ -34,7 +34,7 @@ jobs:
       - name: log values
         run: echo ${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml "${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml"
 
-      - name: trigger quality-gate
-        uses: "a string"
-        with:
-          e2e-branch: "Passed input data branch name from triggerrrrrrr"
+      # - name: trigger quality-gate
+      #   uses: "a string"
+      #   with:
+      #     e2e-branch: "Passed input data branch name from triggerrrrrrr"
