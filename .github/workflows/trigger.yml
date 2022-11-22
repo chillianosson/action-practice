@@ -8,7 +8,7 @@ on:
 jobs:
   like-pizza:
     runs-on: ubuntu-latest
-    if: ${{ github.event.comment.body == 'I like pizza'}}
+    if: ${{ github.event.comment.body.includes(pizza)}}
     steps:
       - name: Like pizza
         uses: actions/github-script@v4
@@ -28,11 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: GitHub Environment Variables Action
-        uses: chillianosson/github-env-vars-action@v2
+      # - name: GitHub Environment Variables Action
+      #   uses: chillianosson/github-env-vars-action@v2
 
       - name: log values
-        run: echo "ref name is ${{env.CI_ACTION_REF_NAME}} repo path is ${{ env.CI_REPOSITORY_SLUG }} head ref is ${{ env.CI_HEAD_REF }}"
+        run: |
+          echo "context is ${{ context.issue }}"
+          echo "ref name is ${{ env.CI_ACTION_REF_NAME }} repo path is ${{ env.CI_REPOSITORY_SLUG }} head ref is ${{ env.CI_HEAD_REF }}"
 
       # - name: trigger quality-gate
       #   uses: "a string"
