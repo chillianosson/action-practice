@@ -4,25 +4,26 @@ on:
       - created
       - edited
       - deleted
+  workflow_dispatch:
 
 jobs:
-  like-pizza:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.comment.body == 'I like pizza'}}
-    steps:
-      - name: Like pizza
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const {owner, repo} = context.issue
-            github.reactions.createForIssueComment({
-              owner,
-              repo,
-              comment_id: context.payload.comment.id,
-              content: "+1",
-            });
+  # like-pizza:
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.event.comment.body == 'pizza'}}
+  #   steps:
+  #     - name: Like pizza
+  #       uses: actions/github-script@v4
+  #       with:
+  #         script: |
+  #           const {owner, repo} = context.issue
+  #           github.reactions.createForIssueComment({
+  #             owner,
+  #             repo,
+  #             comment_id: context.payload.comment.id,
+  #             content: "+1",
+  #           });
 
-      - name: trigger quality-gate
-        uses: .github/workflows/quality-gate.yml
-        with:
-          e2e-branch: "Passed input data branch name from triggerrrrrrr"
+  trigger-quality-gate:
+    uses: chillianosson/action-practice/.github/actions/quality-gate.yml@main
+    with:
+      e2e-branch: "Passed input data branch name from triggerrrrrrr"
