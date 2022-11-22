@@ -2,8 +2,6 @@ on:
   issue_comment:
     types:
       - created
-      - edited
-      - deleted
 
 jobs:
   trigger-quality-gate:
