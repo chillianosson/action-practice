@@ -4,6 +4,8 @@ on:
       - created
       - edited
       - deleted
+  workflow_dispatch:
+
 
 jobs:
   like-pizza:
@@ -31,10 +33,13 @@ jobs:
       # - name: GitHub Environment Variables Action
       #   uses: chillianosson/github-env-vars-action@v2
 
-      - name: log values
-        run: |
-          echo "context is ${{ context.issue }}"
-          echo "ref name is ${{ env.CI_ACTION_REF_NAME }} repo path is ${{ env.CI_REPOSITORY_SLUG }} head ref is ${{ env.CI_HEAD_REF }}"
+      - name: Read commit/pr messages and compare to list of tests
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const refName = ${{ env.CI_ACTION_REF_NAME }};
+            const repoPath = ${{ env.CI_REPOSITORY_SLUG }};
+            const HEAD/branchName = ${{ env.CI_HEAD_REF }};
 
       # - name: trigger quality-gate
       #   uses: "a string"
