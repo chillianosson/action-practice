@@ -27,10 +27,12 @@ jobs:
   trigger-quality-gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Prepare Permissions
+        run: sudo chown ubuntu:ubuntu -R ../*
+
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          # ref: my-branch
-          # default: main
           token: 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
 
       - name: Trigger
