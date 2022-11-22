@@ -35,6 +35,11 @@ jobs:
         with:
           token: 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
 
+      - name: Ensure Clean Checkout
+        run: |
+          rm -rf .git .github node_modules packages
+          rm -f package-lock.json
+
       - name: Trigger
         uses: ./.github/workflows/quality-gate
         with:
