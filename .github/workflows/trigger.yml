@@ -6,24 +6,31 @@ on:
       - deleted
 
 jobs:
-  demo-available:
-    runs-on: ubuntu-latest
+  trigger-quality-gate:
     if: contains(github.event.comment.body, 'demo-available')
-    steps:
-      - name: Trigger Quality Gate
-        uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-        with:
-          e2e-branch: "Passed input data branch name from triggerrrrrrr"
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Like comment
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const {owner, repo} = context.issue
-            github.reactions.createForIssueComment({
-              owner,
-              repo,
-              comment_id: context.payload.comment.id,
-              content: "+1",
-            });
+    name: Trigger that quality baby
+    uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
+    with:
+      runs-on: ubuntu-latest
+      e2e-branch: lets go baby
+  # demo-available:
+  #   runs-on: ubuntu-latest
+  #   if: contains(github.event.comment.body, 'demo-available')
+  #   steps:
+  #     - name: Trigger Quality Gate
+  #       uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
+  #       with:
+  #         e2e-branch: "Passed input data branch name from triggerrrrrrr"
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Like comment
+  #       uses: actions/github-script@v4
+  #       with:
+  #         script: |
+  #           const {owner, repo} = context.issue
+  #           github.reactions.createForIssueComment({
+  #             owner,
+  #             repo,
+  #             comment_id: context.payload.comment.id,
+  #             content: "+1",
+  #           });
