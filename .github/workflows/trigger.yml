@@ -8,7 +8,7 @@ on:
 jobs:
   demo-available:
     runs-on: ubuntu-latest
-    if: contains(github.event.comment.html_url, 'demo-available')
+    if: contains(github.event.comment.body, 'demo-available')
     steps:
       - name: Trigger Quality Gate
         uses: ./.github/workflows/quality-gate.yml
