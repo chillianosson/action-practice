@@ -20,8 +20,3 @@ jobs:
               comment_id: context.payload.comment.id,
               content: "+1",
             });
-
-      - name: trigger quality-gate
-        uses: chillianosson/.github/workflows/trigger.yml
-        with:
-          e2e-branch: "Passed input data branch name from triggerrrrrrr"
