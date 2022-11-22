@@ -11,6 +11,8 @@ jobs:
   log-the-inputs:
     runs-on: ubuntu-latest
     steps:
-     - run: |
+    - name: Checkout
+      uses: actions/checkout@v3
+    - run: |
          echo "inputs.e2e-branch: $inputs.e2e-branch"
          echo "inputs.e2e-branch: ${{ inputs.e2e-branch }}"

@@ -11,7 +11,7 @@ jobs:
     name: Trigger that quality baby
     uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
     with:
-      e2e-branch: lets go baby
+      e2e-branch: "lets go baby"
   # demo-available:
   #   runs-on: ubuntu-latest
   #   if: contains(github.event.comment.body, 'demo-available')
