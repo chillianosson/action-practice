@@ -32,7 +32,7 @@ jobs:
         uses: chillianosson/github-env-vars-action@v2.7.0
 
       - name: log values
-        run: echo "ref name is ${{env.CI_ACTION_REF_NAME}} repo path is ${{ CI_REPOSITORY_SLUG }} head ref is ${{ CI_HEAD_REF }}"
+        run: echo "ref name is ${{env.CI_ACTION_REF_NAME}} repo path is ${{ env.CI_REPOSITORY_SLUG }} head ref is ${{ env.CI_HEAD_REF }}"
 
       # - name: trigger quality-gate
       #   uses: "a string"
