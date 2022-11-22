@@ -27,18 +27,10 @@ jobs:
   trigger-quality-gate:
     runs-on: ubuntu-latest
     steps:
-      - name: Prepare Permissions
-        run: sudo chown ubuntu:ubuntu -R ../*
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           token: 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
-
-      - name: Ensure Clean Checkout
-        run: |
-          rm -rf .git .github node_modules packages
-          rm -f package-lock.json
 
       - name: Trigger
         uses: ./.github/workflows/quality-gate
