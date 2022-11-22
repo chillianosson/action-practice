@@ -3,6 +3,7 @@ on:
     types:
       - created
       - edited
+      - deleted
 
 jobs:
   like-pizza:
