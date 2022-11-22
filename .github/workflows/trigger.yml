@@ -3,12 +3,14 @@ on:
     types:
       - created
       - edited
+      - deleted
 
 jobs:
   like-pizza:
     runs-on: ubuntu-latest
     if: ${{ github.event.comment.body == 'I like pizza'}}
     steps:
+
       - name: Like pizza
         uses: actions/github-script@v4
         with:
@@ -20,3 +22,8 @@ jobs:
               comment_id: context.payload.comment.id,
               content: "+1",
             });
+
+      - name: trigger quality-gate
+        uses: ./.github/workflows/quality-gate.yml
+        with:
+          e2e-branch: "Passed input data branch name from triggerrrrrrr"
