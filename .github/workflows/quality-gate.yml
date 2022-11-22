@@ -1,0 +1,18 @@
+name: Quality gate
+
+on:
+  workflow_call:
+    inputs:
+      e2e-branch:
+        required: true
+        type: string
+
+jobs:
+  log-the-inputs:
+    runs-on: ubuntu-latest
+    steps:
+     - run: |
+         echo "Log level: $LEVEL"
+         echo "Tags: $TAGS"
+         echo "inputs.e2e-branch: $inputs.e2e-branch"
+         echo "inputs.e2e-branch: ${{ inputs.e2e-branch }}"
