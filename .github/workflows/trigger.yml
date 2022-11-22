@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.comment.body == 'I like pizza'}}
     steps:
+
       - name: Like pizza
         uses: actions/github-script@v4
         with:
@@ -21,3 +22,8 @@ jobs:
               comment_id: context.payload.comment.id,
               content: "+1",
             });
+
+  call-workflow:
+    uses: chillianosson/action-practice/.github/workflows/trigger.yml
+    with:
+      e2e-branch: "fake e2e branch name"
