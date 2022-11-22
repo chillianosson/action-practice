@@ -33,7 +33,7 @@ jobs:
           token: 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
 
       - name: Trigger
-        uses: ./.github/workflows/quality-gate
+        uses: chillianosson/action-practice/.github/workflows/quality-gate@main
         with:
           e2e-branch: "Passed input data branch name from triggerrrrrrr"
 
