@@ -6,7 +6,6 @@ on:
       - deleted
   workflow_dispatch:
 
-
 jobs:
   # like-pizza:
   #   runs-on: ubuntu-latest
