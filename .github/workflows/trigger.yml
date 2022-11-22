@@ -28,7 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup useful environment variables
+        uses: FranzDiebold/github-env-vars-action@v2
+        run: |
+          echo CI_ACTION_REF_NAME is ${{ env.CI_ACTION_REF_NAME }}
+
       - name: trigger quality-gate
-        uses: chillianosson/action-practice/.github/workflows/quality-gate.yml
+        uses: ${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml
         with:
           e2e-branch: "Passed input data branch name from triggerrrrrrr"
+        run: echo ${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml "${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml"
