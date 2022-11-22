@@ -28,8 +28,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup useful environment variables
-        uses: FranzDiebold/github-env-vars-action@v2
+      - name: GitHub Environment Variables Action
+        uses: FranzDiebold/github-env-vars-action@v2.7.0
 
       - name: log values
         run: echo ${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml "${{ CI_REPOSITORY_SLUG }}/.github/workflows/quality-gate.yml"
