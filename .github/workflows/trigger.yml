@@ -9,7 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Trigger quality gate correct branch
     steps:
-      - uses: actions/github-script@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: 🔧 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+      - uses: actions/github-script@v6
         id: get-pr
         with:
           script: |
@@ -25,16 +31,18 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
-      - uses: actions/checkout@v2
-        with:
-          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
+            console.log('request is ', request);
+
+      # - uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+      #     ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
 
     # if: contains(github.event.comment.body, 'demo-available')
     # name: Trigger that quality baby
     # uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
     # with:
-      # e2e-branch: "lets go baby"
+    # e2e-branch: "lets go baby"
 
   # demo-available:
   #   runs-on: ubuntu-latest
