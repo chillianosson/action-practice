@@ -10,8 +10,6 @@ jobs:
     name: Get relevant details for PR
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
-    outputs:
-      pr_ref: ${{ steps.get-pr.outputs.result }}
     steps:
       - uses: actions/github-script@v3
         id: get-pr
@@ -26,21 +24,20 @@ jobs:
             try {
               const result = await github.pulls.get(request)
               console.log('result is ', result);
-              console.log('result.data is ', result.data);
               return result.data
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
 
-  commit-change-to-trigger:
-    name: Use branch to trigger workflow
-    runs-on: ubuntu-latest
-    needs: [get-pr-details]
-    steps:
+      # commit-change-to-trigger:
+      #   name: Use branch to trigger workflow
+      #   runs-on: ubuntu-latest
+      #   needs: [get-pr-details]
+      #   steps:
       - uses: actions/checkout@v2
         with:
-          repository: fromJSON(needs.get-pr-details.steps.get-pr.outputs.result).head.repo.full_name
-          ref: fromJSON(needs.get-pr-details.steps.get-pr.outputs.result).head.ref
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
 
       - name: Git Status
         run: |
@@ -55,7 +52,7 @@ jobs:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
         with:
-          issue-number: fromJSON(needs.get-pr-details.steps.get-pr.outputs.result).pull_number
+          issue-number: ${{ fromJSON(steps.get-pr.outputs.result).pull_number }}
           body: |
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
