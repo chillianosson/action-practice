@@ -37,7 +37,7 @@ jobs:
             console.log(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             console.log('context.repo.owner is ', context.repo.owner);
             console.log('context.repo.repo is ', context.repo.repo);
-            console.log('context.repo.issue.number is ', context.repo.issue.number);
+            console.log('context.issue.number is ', context.issue.number);
 
       #  const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
       #  const request2 = `/repos/{context.repo.owner}/${context.repo.repo}/pulls`;
