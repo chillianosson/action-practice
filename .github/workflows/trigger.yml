@@ -42,7 +42,8 @@ jobs:
             console.log('context.repo.repo is ', context.repo.repo);
             console.log('context.issue is ', context.issue);
             console.log('context is ', JSON.stringify(context));
-      #  const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
+            const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
+            console.log('possiblePR is ', possiblePR);
       #  const request2 = `/repos/{context.repo.owner}/${context.repo.repo}/pulls`;
 
       # - uses: actions/checkout@v2
