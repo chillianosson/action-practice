@@ -28,14 +28,18 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
+
       - uses: actions/checkout@v2
         with:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
-          script: |
-            console.log('branch name is ', ${{ fromJSON(steps.get-pr.outputs.result).head.ref }});
-            echo 'branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}';
-            echo "branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}";
+
+      - name: Print info
+        id: print information
+        run: |
+          console.log('branch name is ', ${{ fromJSON(steps.get-pr.outputs.result).head.ref }});
+          echo 'branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}';
+          echo "branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}";
 
   # get-branch:
   #   name: Get branch from PR
