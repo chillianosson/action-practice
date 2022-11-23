@@ -4,7 +4,6 @@ on:
   issue_comment:
     types:
       - created
-      - edited
 
 jobs:
   pr-commented:
@@ -32,143 +31,23 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }} # branch name
 
-      - name: Print info
-        id: print-information
-        run: |
-          console.log('branch name is ', ${{ fromJSON(steps.get-pr.outputs.result).head.ref }});
-          echo 'branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}';
-          echo "branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}";
+      - name: Git Status
+        run:  |
+          git status
 
-  # get-branch:
-  #   name: Get branch from PR
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # - name: Prepare Permissions
-  #     #   run: |
-  #     #     sudo chown ubuntu:ubuntu -R ../*
+      - name: Setup Node Version
+        uses: actions/setup-node@v1
+        with:
+          always-auth: false
+          node-version: "16.x"
 
-  #     # - name: Setup tmp directory
-  #     #   run: |
-  #     #     tmpDir="$(mktemp -d)"
-  #     #     echo "CI_TMP_DIR=$tmpDir" >> $GITHUB_ENV
+      - name: Push change to trigger quality gate
+        run:  |
+          mkdir demo
+          touch demo/demo-available.txt
+          git add demo/demo-available.txt
+          git commit -m "feature(quality gate): push something to run quality gate from correct branch"
+          git push
 
-  #     # - name: Checkout
-  #     #   uses: actions/checkout@v3
-  #     #   with:
-  #     #     fetch-depth: 0
-
-  #     - name: Find Pull Request
-  #       id: findPr
-  #       uses: jwalton/gh-find-current-pr@v1
-
-  #     - name: Get Branch from PR
-  #       id: get-branch
-  #       run: |
-  #         echo "${{ github.event.client_payload }}"
-  #         if ${{ github.head_ref == '' }};
-  #         then
-  #           branch=${{ github.event.workflow_run.head_branch || github.event.client_payload.ref_name }}
-  #         else
-  #           branch=${{ github.head_ref || github.event.client_payload.ref_name }}
-  #         fi
-
-  #         echo "Matching Branch: $branch"
-  #         echo "branch=$branch" >> $GITHUB_OUTPUT
-
-# jobs:
-#   get-branch:
-#     runs-on: ubuntu-latest
-#     name: Get branch from PR
-#     steps:
-#       - name: GitHub Environment Variables Action
-#         uses: FranzDiebold/github-env-vars-action@v2.7.0
-
-# - name: Checkout - ${{ env.CI_REF_NAME }}
-# uses: actions/checkout@v3
-# with:
-# token: ${{ secrets.OBG_GHACTION_TOKEN }}
-# fetch-depth: 0
-# ref: ${{ env.CI_REF_NAME }}
-
-# jobs:
-#   trigger-quality-gate:
-#     runs-on: ubuntu-latest
-#     name: Trigger quality gate correct branch
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#       - name: 🔧 Setup Node
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "16.x"
-#       # - name: checkout pr
-#       #   run: hub pr checkout ${{ github.event.issue.pull_request  }}
-#       - name: Print values
-#         uses: actions/github-script@v6
-#         id: get-pr
-#         with:
-#         # github.ref is full branch name - refs/heads/feature-branch-1
-#         # github.ref_name is short - feature-branch-1
-#         # github.token
-#         # context.issue.number is undefined
-#         # const result = await github.pulls.get(request)
-#           script: |
-
-#             const request = {
-#               owner: context.repo.owner,
-#               repo: context.repo.repo,
-#               pull_number: context.issue.number
-#             }
-#             try {
-#               return result.data
-#             } catch (err) {
-#               core.setFailed(`Request failed with error ${err}`)
-#             }
-
-#             console.log('html_url is ', context.comment.html_url);
-#             console.log('html_url is ', context.comment.html_url);
-#             console.log('context is ', JSON.stringify(context));
-#            # console.log(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`);
-
-#            # console.log('context.repo.owner is ', context.repo.owner);
-#            # console.log('context.repo.repo is ', context.repo.repo);
-#            # console.log('context.issue is ', context.issue);
-#           # const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
-#           # console.log('possiblePR is ', possiblePR);
-
-#       #  const request2 = `/repos/{context.repo.owner}/${context.repo.repo}/pulls`;
-
-#       # - uses: actions/checkout@v2
-#       #   with:
-#       #     repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-#       #     ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
-
-#     # if: contains(github.event.comment.body, 'demo-available')
-#     # name: Trigger that quality baby
-#     # uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-#     # with:
-#     # e2e-branch: "lets go baby"
-
-#   # demo-available:
-#   #   runs-on: ubuntu-latest
-#   #   if: contains(github.event.comment.body, 'demo-available')
-#   #   steps:
-#   #     - name: Trigger Quality Gate
-#   #       uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-#   #       with:
-#   #         e2e-branch: "Passed input data branch name from triggerrrrrrr"
-#   #     - name: Checkout
-#   #       uses: actions/checkout@v3
-#   #     - name: Like comment
-#   #       uses: actions/github-script@v4
-#   #       with:
-#   #         script: |
-#   #           const {owner, repo} = context.issue
-#   #           github.reactions.createForIssueComment({
-#   #             owner,
-#   #             repo,
-#   #             comment_id: context.payload.comment.id,
-#   #             content: "+1",
-#   #           });
