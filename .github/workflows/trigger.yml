@@ -37,13 +37,15 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
-            console.log(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
-            console.log('context.repo.owner is ', context.repo.owner);
-            console.log('context.repo.repo is ', context.repo.repo);
-            console.log('context.issue is ', context.issue);
+
             console.log('context is ', JSON.stringify(context));
-            const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
-            console.log('possiblePR is ', possiblePR);
+           # console.log(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`);
+           # console.log('context.repo.owner is ', context.repo.owner);
+           # console.log('context.repo.repo is ', context.repo.repo);
+           # console.log('context.issue is ', context.issue);
+          # const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
+          # console.log('possiblePR is ', possiblePR);
+
       #  const request2 = `/repos/{context.repo.owner}/${context.repo.repo}/pulls`;
 
       # - uses: actions/checkout@v2
