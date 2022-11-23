@@ -6,10 +6,12 @@ on:
       - created
 
 jobs:
-  pr-commented:
-    name: PR commented
+  get-pr-details:
+    name: Get relevant details for PR
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
+    outputs:
+      pr_ref: ${{ steps.get-pr.outputs.result }}
     steps:
       - uses: actions/github-script@v3
         id: get-pr
@@ -23,18 +25,24 @@ jobs:
             core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             try {
               const result = await github.pulls.get(request)
+              result.data.pull_number = context.issue.number
               return result.data
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
 
+  commit-change-to-trigger:
+    name: Use branch to trigger workflow
+    runs-on: ubuntu-latest
+    needs: get-pr-details
+    steps:
       - uses: actions/checkout@v2
         with:
-          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }} # branch name
+          repository: ${{ fromJSON(needs.get-pr-details.steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(needs.get-pr-details.steps.get-pr.outputs.result).head.ref }} # branch name
 
       - name: Git Status
-        run:  |
+        run: |
           git status
 
       - name: Setup Node Version
@@ -46,14 +54,14 @@ jobs:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
         with:
-          issue-number: context.issue.number
+          issue-number: ${{ fromJSON(needs.get-pr-details.steps.get-pr.outputs.result).pull_number }}
           body: |
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
             - Created by [create-or-update-comment][1]
 
             [1]: https://github.com/peter-evans/create-or-update-comment
-          reactions: '+1'
+          reactions: "+1"
 
       # - name: Push change to trigger quality gate
       #   run:  |
@@ -64,4 +72,3 @@ jobs:
       #     git add demo/demo-available.txt
       #     git commit -m "feature(quality gate): push something to run quality gate from correct branch"
       #     git push
-
