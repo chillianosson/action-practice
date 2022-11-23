@@ -15,4 +15,4 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: branch-name
-          path: path/to/artifact/world.txt
+          path: e2e-artifacts/test-branch.txt
