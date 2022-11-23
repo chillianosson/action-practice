@@ -35,7 +35,7 @@ jobs:
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
 
       - name: Print info
-        id: print information
+        id: print-information
         run: |
           console.log('branch name is ', ${{ fromJSON(steps.get-pr.outputs.result).head.ref }});
           echo 'branch name is ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}';
