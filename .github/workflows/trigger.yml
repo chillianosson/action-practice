@@ -2,16 +2,49 @@ on:
   issue_comment:
     types:
       - created
-      - edited
-      - deleted
-  workflow_dispatch:
 
 jobs:
-  # like-pizza:
+  trigger-quality-gate:
+    runs-on: ubuntu-latest
+    name: Trigger quality gate correct branch
+    steps:
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          # Can be "open", "closed", or "all".  Defaults to "open".
+          state: open
+
+      - name: Get Branch from PR
+        id: get-branch
+        run: |
+          echo "${{ github.event.client_payload }}"
+          if ${{ github.head_ref == '' }};
+          then
+            branch=${{ github.event.workflow_run.head_branch || github.event.client_payload.ref_name }}
+          else
+            branch=${{ github.head_ref || github.event.client_payload.ref_name }}
+          fi
+
+          echo "Matching Branch: $branch"
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+
+    # if: contains(github.event.comment.body, 'demo-available')
+    # name: Trigger that quality baby
+    # uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
+    # with:
+      # e2e-branch: "lets go baby"
+
+  # demo-available:
   #   runs-on: ubuntu-latest
-  #   if: ${{ github.event.comment.body == 'pizza'}}
+  #   if: contains(github.event.comment.body, 'demo-available')
   #   steps:
-  #     - name: Like pizza
+  #     - name: Trigger Quality Gate
+  #       uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
+  #       with:
+  #         e2e-branch: "Passed input data branch name from triggerrrrrrr"
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Like comment
   #       uses: actions/github-script@v4
   #       with:
   #         script: |
@@ -22,8 +55,3 @@ jobs:
   #             comment_id: context.payload.comment.id,
   #             content: "+1",
   #           });
-
-  trigger-quality-gate:
-    uses: chillianosson/action-practice/.github/actions/quality-gate.yml@main
-    with:
-      e2e-branch: "Passed input data branch name from triggerrrrrrr"
