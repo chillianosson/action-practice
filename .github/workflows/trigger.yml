@@ -18,7 +18,11 @@ jobs:
       - uses: actions/github-script@v6
         id: get-pr
         with:
+        # github.ref is full branch name - refs/heads/feature-branch-1
+        # github.ref_name is short - feature-branch-1
+        # github.token
           script: |
+            const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
             const request = {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -31,6 +35,8 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
+
+            console.log('possiblePR is ', possiblePR);
             console.log('request is ', request);
 
       # - uses: actions/checkout@v2
