@@ -43,13 +43,25 @@ jobs:
           always-auth: false
           node-version: "16.x"
 
-      - name: Push change to trigger quality gate
-        run:  |
-          mkdir demo
-          touch demo/demo-available.txt
-          git config --global user.email "cillian.omurchu@betssongroup.com"
-          git config --global user.name "chillianosson"
-          git add demo/demo-available.txt
-          git commit -m "feature(quality gate): push something to run quality gate from correct branch"
-          git push
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ fromJSON(steps.get-pr.outputs.result).base.ref }}
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
+
+            [1]: https://github.com/peter-evans/create-or-update-comment
+          reactions: '+1'
+
+      # - name: Push change to trigger quality gate
+      #   run:  |
+      #     mkdir demo
+      #     touch demo/demo-available.txt
+      #     git config --global user.email "cillian.omurchu@betssongroup.com"
+      #     git config --global user.name "chillianosson"
+      #     git add demo/demo-available.txt
+      #     git commit -m "feature(quality gate): push something to run quality gate from correct branch"
+      #     git push
 
