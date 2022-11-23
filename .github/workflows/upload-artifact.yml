@@ -14,5 +14,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: branch-name
+          name: feature-test-branch-1
           path: e2e-artifacts/test-branch.txt
