@@ -28,7 +28,8 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             }
-            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            const request2 = `/repos/{context.repo.owner}/${context.repo.repo}/pulls`;
+            console.log(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             try {
               const result = await github.pulls.get(request)
               return result.data
@@ -37,7 +38,8 @@ jobs:
             }
 
             console.log('possiblePR is ', possiblePR);
-            console.log('request is ', request);
+            console.log('request 1 is ', request);
+            console.log('request 2 is ', request2);
 
       # - uses: actions/checkout@v2
       #   with:
