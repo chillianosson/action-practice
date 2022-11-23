@@ -5,11 +5,35 @@ on:
 
 jobs:
   trigger-quality-gate:
-    if: contains(github.event.comment.body, 'demo-available')
-    name: Trigger that quality baby
-    uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-    with:
-      e2e-branch: "lets go baby"
+    runs-on: ubuntu-latest
+    name: Trigger quality gate correct branch
+    steps:
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          # Can be "open", "closed", or "all".  Defaults to "open".
+          state: open
+
+      - name: Get Branch from PR
+        id: get-branch
+        run: |
+          echo "${{ github.event.client_payload }}"
+          if ${{ github.head_ref == '' }};
+          then
+            branch=${{ github.event.workflow_run.head_branch || github.event.client_payload.ref_name }}
+          else
+            branch=${{ github.head_ref || github.event.client_payload.ref_name }}
+          fi
+
+          echo "Matching Branch: $branch"
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+
+    # if: contains(github.event.comment.body, 'demo-available')
+    # name: Trigger that quality baby
+    # uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
+    # with:
+      # e2e-branch: "lets go baby"
+
   # demo-available:
   #   runs-on: ubuntu-latest
   #   if: contains(github.event.comment.body, 'demo-available')
