@@ -47,6 +47,8 @@ jobs:
         run:  |
           mkdir demo
           touch demo/demo-available.txt
+          git config --global user.email "cillian.omurchu@betssongroup.com"
+          git config --global user.name "chillianosson"
           git add demo/demo-available.txt
           git commit -m "feature(quality gate): push something to run quality gate from correct branch"
           git push
