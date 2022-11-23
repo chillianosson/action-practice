@@ -15,12 +15,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
-      - uses: actions/github-script@v6
+      - name: checkout pr
+        run: hub pr checkout ${{ github.event.issue.number }}
+      - name: Print values
+        uses: actions/github-script@v6
         id: get-pr
         with:
         # github.ref is full branch name - refs/heads/feature-branch-1
         # github.ref_name is short - feature-branch-1
         # github.token
+        # context.issue.number is undefined
           script: |
             const request = {
               owner: context.repo.owner,
@@ -33,12 +37,11 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
-
             console.log(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             console.log('context.repo.owner is ', context.repo.owner);
             console.log('context.repo.repo is ', context.repo.repo);
-            console.log('context.issue.number is ', context.issue.number);
-
+            console.log('context.issue is ', context.issue);
+            console.log('context is ', JSON.stringify(context));
       #  const possiblePR = $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }');
       #  const request2 = `/repos/{context.repo.owner}/${context.repo.repo}/pulls`;
 
