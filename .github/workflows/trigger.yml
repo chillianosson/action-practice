@@ -15,8 +15,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
-      - name: checkout pr
-        run: hub pr checkout ${{ github.event.issue.number }}
+      # - name: checkout pr
+      #   run: hub pr checkout ${{ github.event.issue.pull_request  }}
       - name: Print values
         uses: actions/github-script@v6
         id: get-pr
