@@ -51,8 +51,8 @@ jobs:
           ls
           rm -rf demo
           mkdir demo
-          touch demo/demo-available2.txt
-          echo -e "hello\nworld" >> demo/demo-available2.txt
-          git add demo/demo-available2.txt
+          touch demo/demo-available3.txt
+          echo -e "hello\nworld" >> demo/demo-available3.txt
+          git add demo/demo-available3.txt
           git commit -m "feature(quality gate): push something to run quality gate from correct branch"
           git push
