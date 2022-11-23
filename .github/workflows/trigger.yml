@@ -11,6 +11,21 @@ jobs:
     name: Get branch from PR
     runs-on: ubuntu-latest
     steps:
+      # - name: Prepare Permissions
+      #   run: |
+      #     sudo chown ubuntu:ubuntu -R ../*
+
+      - name: Setup tmp directory
+        run: |
+          tmpDir="$(mktemp -d)"
+          echo "CI_TMP_DIR=$tmpDir" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # token: ${{ secrets.OBG_GHACTION_TOKEN }}
+          fetch-depth: 0
+
       - name: Find Pull Request
         id: findPr
         uses: jwalton/gh-find-current-pr@v1
