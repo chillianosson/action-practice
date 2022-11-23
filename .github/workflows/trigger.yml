@@ -46,12 +46,13 @@ jobs:
 
       - name: Push change to trigger quality gate
         run:  |
-          rm -rf demo
-          mkdir demo
-          touch demo/demo-available.txt
-          echo -e "hello\nworld" >> demo/demo-available.txt
           git config --global user.email "cillian.omurchu@betssongroup.com"
           git config --global user.name "chillianosson"
+          ls
+          rm -rf demo
+          mkdir demo
+          touch demo/demo-available2.txt
+          echo -e "hello\nworld" >> demo/demo-available.txt
           git add demo/demo-available.txt
           git commit -m "feature(quality gate): push something to run quality gate from correct branch"
           git push
