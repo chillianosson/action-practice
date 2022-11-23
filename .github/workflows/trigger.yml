@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   issue_comment:
     types:
       - created
@@ -8,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Trigger quality gate correct branch
     steps:
-      - uses: jwalton/gh-find-current-pr@v1
+      - uses: chillianosson/gh-find-current-pr@master
         id: findPr
         with:
           # Can be "open", "closed", or "all".  Defaults to "open".
