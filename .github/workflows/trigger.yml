@@ -1,57 +1,55 @@
+name: Quality Gate Trigger
+
 on:
   issue_comment:
     types:
       - created
 
 jobs:
-  trigger-quality-gate:
+  pr-commented:
+    name: PR commented
+    if: github.event.issue.pull_request
     runs-on: ubuntu-latest
-    name: Trigger quality gate correct branch
     steps:
-      - uses: jwalton/gh-find-current-pr@v1
-        id: findPr
+      - uses: actions/github-script@v3
+        id: get-pr
         with:
-          # Can be "open", "closed", or "all".  Defaults to "open".
-          state: open
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            try {
+              const result = await github.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
 
-      - name: Get Branch from PR
-        id: get-branch
-        run: |
-          echo "${{ github.event.client_payload }}"
-          if ${{ github.head_ref == '' }};
-          then
-            branch=${{ github.event.workflow_run.head_branch || github.event.client_payload.ref_name }}
-          else
-            branch=${{ github.head_ref || github.event.client_payload.ref_name }}
-          fi
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }} # branch name
 
-          echo "Matching Branch: $branch"
-          echo "branch=$branch" >> $GITHUB_OUTPUT
+      - name: Git Status
+        run:  |
+          git status
 
-    # if: contains(github.event.comment.body, 'demo-available')
-    # name: Trigger that quality baby
-    # uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-    # with:
-      # e2e-branch: "lets go baby"
+      - name: Setup Node Version
+        uses: actions/setup-node@v1
+        with:
+          always-auth: false
+          node-version: "16.x"
 
-  # demo-available:
-  #   runs-on: ubuntu-latest
-  #   if: contains(github.event.comment.body, 'demo-available')
-  #   steps:
-  #     - name: Trigger Quality Gate
-  #       uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-  #       with:
-  #         e2e-branch: "Passed input data branch name from triggerrrrrrr"
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Like comment
-  #       uses: actions/github-script@v4
-  #       with:
-  #         script: |
-  #           const {owner, repo} = context.issue
-  #           github.reactions.createForIssueComment({
-  #             owner,
-  #             repo,
-  #             comment_id: context.payload.comment.id,
-  #             content: "+1",
-  #           });
+      - name: Push change to trigger quality gate
+        run:  |
+          mkdir demo
+          touch demo/demo-available.txt
+          git config --global user.email "cillian.omurchu@betssongroup.com"
+          git config --global user.name "chillianosson"
+          git add demo/demo-available.txt
+          git commit -m "feature(quality gate): push something to run quality gate from correct branch"
+          git push
+

@@ -1,0 +1,18 @@
+name: Upload branch reference
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload-branch-reference:
+    name: Upload a reference
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir -p e2e-artifacts/test-branch
+      - run: echo feature-test-branch-1 > e2e-artifacts/test-branch.txt
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: feature-test-branch-1
+          path: e2e-artifacts/test-branch.txt

@@ -8,57 +8,15 @@ jobs:
     name: Log inputs
     runs-on: [self-hosted, ubuntu-latest, ondemand]
     steps:
-    - name: Display inputs
-      run: |
-        echo e2e-branch, input is: ${{ github.event.inputs.e2e-branch }}
+      - name: Get file
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v34
+        with:
+          files: |
+            demo/demo-available.txt
 
-  run-quality-gate:
-    needs: [log-inputs]
-    name: Commit new change to trigger
-    runs-on: [self-hosted, ubuntu-latest]
-    steps:
-    # - name: Prepare Permissions
-    #   run: sudo chown ubuntu:ubuntu -R ../*
-
-    # - name: Ensure Clean Checkout
-    #   run: rm -rf .git .github node_modules packages
-
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-      # do i need a token here
-      # with:
-      #   token: ${{ secrets.OBG_GHACTION_TOKEN }}
-
-    # - name: Setup useful environment variables
-    #   uses: FranzDiebold/github-env-vars-action@v2
-
-    - name: Git Status
-      run:  |
-        git status
-
-    # - name: Setup Node Version
-    #   uses: actions/setup-node@v1
-    #   with:
-    #     always-auth: false
-    #     node-version: "16.x"
-
-    # - name: Global Configs Setup
-    #   run: |
-    #      npm config set registry https://container-registry.test.euc1.betsson.tech/npm/OBG-NPM/
-    #      npm config set strict-ssl false
-
-    # - name: npm i
-    #   run:  |
-    #     npm i
-
-    # - name: Git Status
-    #   run:  |
-    #     git status
-
-    - name: Push the change
-      run:  |
-        git add package.json
-        git commit -m "chore(package): bump and lock dependencies for release"
-        git push
+      - name: Run step if any file(s) in the demo folder change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "One or more files in the demo folder has changed."
+          echo "List all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
