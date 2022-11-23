@@ -6,7 +6,7 @@ on:
 jobs:
   upload-branch-reference:
     name: Upload a reference
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: mkdir -p e2e-artifacts/test-branch
