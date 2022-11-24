@@ -17,6 +17,12 @@ jobs:
     #   ${{ contains(github.event.comment.body, 'assigned demo url is')}}) &&
     #   ${{ github.event.comment.user.name}}
     runs-on: ubuntu-latest
+    outputs:
+      PR: ${{ steps.get-pr.outputs.result }}
+      REPO: ${{ steps.set-variables.outputs.REPO }}
+      PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
+      COMMENT_USER: ${{ steps.set-variables.outputs.COMMENT_USER }}
+      COMMENT_BODY: ${{ steps.set-variables.outputs.COMMENT_BODY }}
     steps:
       - name: Get PR Details
         uses: actions/github-script@v3
@@ -37,25 +43,30 @@ jobs:
             }
 
       - name: Set variables in environment
-        uses: actions/github-script@v3
-        with:
-          script: console.log('running');
-        env:
-          PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
-          REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          COMMENT_USER: ${{ github.event.comment.user.login }}
-          COMMENT_BODY: ${{ github.event.comment.body }}
+        id: set-variables
+        run: |
+          echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
+          echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
+          echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
+          echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
 
-      - name: Verify Demo comment - to move to top filter before anything else
+  comment_verification:
+    name: Verify Demo Comment
+    runs-on: ubuntu-latest
+    needs: [pr_details]
+    steps:
+      - name: print relevant values
         uses: actions/github-script@v6
         with:
           script: |
-            const demoRegex = new RegExp('demo.betsson.com');
-            const isValidDemoString = demoRegex.test($COMMENT)
-            console.log('${{ env.COMMENT_USER }} is ', $COMMENT_USER);
-            console.log('demoRegex is ', demoRegex);
-            console.log('isValidDemoString is ', isValidDemoString);
-            console.log('isValidCommenterBot is ', isValidCommenterBot);
+              comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
+              console.log('comment is ', comment);
+            # const demoRegex = new RegExp('demo.betsson.com');
+            # const isValidDemoString = demoRegex.test($COMMENT)
+            # console.log('${{ env.COMMENT_USER }} is ', ${{COMMENT_USER}});
+            # console.log('demoRegex is ', demoRegex);
+            # console.log('isValidDemoString is ', isValidDemoString);
+            # console.log('isValidCommenterBot is ', isValidCommenterBot);
 
   # get-pr-details:
   #   name: Get relevant details for PR
