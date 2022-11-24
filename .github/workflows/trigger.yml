@@ -54,7 +54,7 @@ jobs:
           script: |
             const demoRegex = new RegExp('demo.betsson.com');
             const isValidDemoString = demoRegex.test(env.COMMENT)
-            const isValidCommenterBot = ( ${{ env.COMMENT_USER }} === "area-core-rc")
+            const isValidCommenterBot = ( ${{ env.COMMENT_USER }} == "area-core-rc")
             console.log('demoRegex is ', demoRegex);
             console.log('isValidDemoString is ', isValidDemoString);
             console.log('isValidCommenterBot is ', isValidCommenterBot);
