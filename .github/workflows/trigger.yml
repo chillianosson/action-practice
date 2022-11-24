@@ -70,7 +70,14 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(context)
+            console.log(""context)
+            console.log("number is ", context.payload.comment.issue.number)
+            console.log("body is ", context.payload.comment.body)
+            demoRegex = new RegExp('demo.betsson.com');
+            isValid = demoRegex.test(context.payload.comment.body);
+            console.log("isValid is ", isValid);
+          # console.log(performed_via_github_app could be good to use for bot)
+
           # branch = "${{ needs.check-area.outputs.branch }}";
           # tokens = branch.substring((branch.indexOf("/")+1)).split('-');
           # issue_url = "${{ needs.pr_details.outputs.ISSUE_URL }}";
