@@ -70,8 +70,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(context)
-            console.log(context.payload.comment.issue.number)
+            console.log(context.payload.issue.number)
             console.log(context.payload.comment.body)
             demoRegex = new RegExp('demo.betsson.com');
             isValid = demoRegex.test(context.payload.comment.body);
