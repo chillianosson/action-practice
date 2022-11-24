@@ -73,17 +73,16 @@ jobs:
             branch = "${{ needs.check-area.outputs.branch }}";
             tokens = branch.substring((branch.indexOf("/")+1)).split('-');
 
-            const issue_url = "${{ github.event.comment.issue_url }}";
-            const last_index = issue_url.lastIndexOf('/');
-            const issueNumber = issue_url.substring(last_index + 1);
+            issue_url = "${{ needs.pr_details.outputs.ISSUE_URL }}";
+            last_index = issue_url.lastIndexOf('/');
+            issueNumber = issue_url.substring(last_index + 1);
 
             const comment = ${{ needs.pr_details.outputs.COMMENT_BODY }};
             const user = ${{ needs.pr_details.outputs.COMMENT_USER }};
             const demoRegex = new RegExp('demo.betsson.com');
             const isValid = demoRegex.test(comment);
-            console.log('github.event.comment.issue_url is ', $issue_url);
-            console.log('github.event.comment.issue_url is ', ${{issue_url}});
-            console.log('issueNumber is ', issueNumber);
+            console.log(`is valid is ${{isValid}}`);
+            console.log("issueNumber is ${{ issueNumber }}");
             return isValid
 
   # set_ready_label:
