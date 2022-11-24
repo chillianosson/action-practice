@@ -58,8 +58,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-              comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
-              user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
+              const comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
+              const user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
               console.log('comment is ', comment);
               console.log('user is ', user);
               const demoRegex = new RegExp('demo.betsson.com');
