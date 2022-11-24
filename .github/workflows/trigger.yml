@@ -69,7 +69,7 @@ jobs:
             return isValidDemoString
 
   trigger_quality-gate:
-    uses: chillianosson/action-practice/.github/workflows/quality-gate.yml
+    uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
     if: ${{ needs.comment_verification.result == 'true'}}
     needs: [pr_details, comment_verification]
     with:
