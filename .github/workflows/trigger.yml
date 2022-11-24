@@ -50,7 +50,7 @@ jobs:
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
           echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
           echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
-          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_OUTPUT
+          echo "ISSUE_URL=${{ github.event.issue.issue_url }}" >> $GITHUB_OUTPUT
 
   validate_comment:
     name: Validate Robot Demo Available Comment
