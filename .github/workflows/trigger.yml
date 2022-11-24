@@ -75,7 +75,7 @@ jobs:
             const demoRegex = new RegExp('demo.betsson.com');
             const isValid = demoRegex.test(comment);
             const issue_url = ${{ github.event.comment.issue_url }};
-            const issueNumber = (${{ github.event.comment.url }}).split("/").pop());
+            const issueNumber = issue_url.split("/").pop();
             console.log('github.event.comment.issue_url is ', issue_url);
             console.log('issueNumber is ', issueNumber);
             return isValid
