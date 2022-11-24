@@ -69,12 +69,9 @@ jobs:
             return isValidDemoString
 
   trigger_quality-gate:
-    name: Trigger quality gate on correct feature branch
-    runs-on: ubuntu-latest
+    uses: "chillianosson/action-practice/.github/workflows/quality-gate.yml@${{ needs.pr_details.outputs.PR_BRANCH }}"
+    if: ${{ needs.comment_verification.result == 'true'}}
     needs: [pr_details, comment_verification]
-    # if: ${{ needs.comment_verification.result == 'true'}}
-    steps:
-      - name: Call workflow with correct branch
-        uses: "chillianosson/action-practice/.github/workflows/quality-gate.yml@${{ needs.pr_details.outputs.PR_BRANCH }}"
-        with:
-          username: Chilliano
+    with:
+      username: Chilliano
+
