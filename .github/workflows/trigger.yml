@@ -64,19 +64,15 @@ jobs:
           script: |
             const comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
             const user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
-            console.log('comment is ', comment);
-            console.log('user is ', user);
             const demoRegex = new RegExp('demo.betsson.com');
-            const isValidDemoString = demoRegex.test(comment);
-            console.log('demoRegex is ', demoRegex);
-            console.log('isValidDemoString is ', isValidDemoString);
-            return isValidDemoString
+            const isValid = demoRegex.test(comment);
+            return isValid
 
   trigger_quality-gate:
     name: Trigger Quality Gate with correct branch
     uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
     if: ${{ needs.validate_comment.verified }}
-    needs: [pr_details, comment_verification]
+    needs: [pr_details, validate_comment]
     with:
       username: Chilliano
 
