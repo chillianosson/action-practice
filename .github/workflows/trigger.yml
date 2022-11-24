@@ -45,8 +45,8 @@ jobs:
         env:
           PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          COMMENT_USER: ${{ fromJSON(github.event.comment.user.login) }}
-          COMMENT_BODY: ${{ fromJSON(github.event.comment.body) }}
+          COMMENT_USER: ${{ github.event.comment.user.login }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
 
       - name: Verify Demo comment - to move to top filter before anything else
         uses: actions/github-script@v3
