@@ -44,7 +44,7 @@ jobs:
         env:
           PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          COMMENT: ${{ github.event.comment }}
+          COMMENT: ${{ fromJason(github.event.comment) }}
 
 
 
