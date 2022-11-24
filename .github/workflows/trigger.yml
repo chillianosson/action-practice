@@ -74,7 +74,7 @@ jobs:
             tokens = branch.substring((branch.indexOf("/")+1)).split('-');
 
             const issue_url = "${{ github.event.comment.issue_url }}";
-            const last_index = str.lastIndexOf('/');
+            const last_index = issue_url.lastIndexOf('/');
             const issueNumber = issue_url.substring(last_index + 1);
 
             const comment = ${{ needs.pr_details.outputs.COMMENT_BODY }};
