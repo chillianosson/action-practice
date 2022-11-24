@@ -51,8 +51,8 @@ jobs:
         with:
           script: |
             const demoRegex = new RegExp('demo.betsson.com');
-            const isValidDemoString = demoRegex.test(env.COMMENT)
-            console.log('${{ env.COMMENT_USER }} is ', ${{ env.COMMENT_USER }});
+            const isValidDemoString = demoRegex.test($COMMENT)
+            console.log('${{ env.COMMENT_USER }} is ', $COMMENT_USER);
             console.log('demoRegex is ', demoRegex);
             console.log('isValidDemoString is ', isValidDemoString);
             console.log('isValidCommenterBot is ', isValidCommenterBot);
