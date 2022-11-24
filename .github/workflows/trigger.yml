@@ -5,7 +5,6 @@ on:
     types: [created, edited]
 
 jobs:
-
   pr_details:
     # This job only runs for
     # * pull request
@@ -79,54 +78,3 @@ jobs:
         uses: "chillianosson/action-practice/.github/workflows/quality-gate.yml@${{ needs.pr_details.outputs.PR_BRANCH }}"
         with:
           username: Chilliano
-
-  # get-pr-details:
-  #   name: Get relevant details for PR
-  #   if: github.event.issue.pull_request
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/github-script@v3
-  #       id: get-pr
-  #       with:
-  #         script: |
-  #           const request = {
-  #             owner: context.repo.owner,
-  #             repo: context.repo.repo,
-  #             pull_number: context.issue.number
-  #           }
-  #           core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
-  #           try {
-  #             const result = await github.pulls.get(request)
-  #             console.log('result.data is ', result.data);
-  #             return result.data
-  #           } catch (err) {
-  #             core.setFailed(`Request failed with error ${err}`)
-  #           }
-
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-  #         ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
-
-  #     - name: Git Status
-  #       run: |
-  #         git status
-
-  #     - name: Setup Node Version
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         always-auth: false
-  #         node-version: "16.x"
-
-  #     - name: Push change to trigger quality gate
-  #       run: |
-  #         git config --global user.email "cillian.omurchu@betssongroup.com"
-  #         git config --global user.name "chillianosson"
-  #         ls
-  #         rm -rf demo
-  #         mkdir demo
-  #         touch demo/demo-available3.txt
-  #         echo -e "hello\nworld" >> demo/demo-available3.txt
-  #         git add demo/demo-available3.txt
-  #         git commit -m "feature(quality gate): push something to run quality gate from correct branch"
-  #         git push
