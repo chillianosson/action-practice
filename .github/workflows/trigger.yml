@@ -67,15 +67,20 @@ jobs:
 
       - name: print relevant values
         id: validate-comment
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
-            const comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
-            const user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
+            branch = "${{ needs.check-area.outputs.branch }}";
+            tokens = branch.substring((branch.indexOf("/")+1)).split('-');
+
+            const issue_url = "${{ github.event.comment.issue_url }}";
+            const last_index = str.lastIndexOf('/');
+            const issueNumber = issue_url.substring(last_index + 1);
+
+            const comment = ${{ needs.pr_details.outputs.COMMENT_BODY }};
+            const user = ${{ needs.pr_details.outputs.COMMENT_USER }};
             const demoRegex = new RegExp('demo.betsson.com');
             const isValid = demoRegex.test(comment);
-            const issue_url = ${{ github.event.comment.issue_url }};
-            const issueNumber = issue_url.split("/").pop();
             console.log('github.event.comment.issue_url is ', issue_url);
             console.log('issueNumber is ', issueNumber);
             return isValid
