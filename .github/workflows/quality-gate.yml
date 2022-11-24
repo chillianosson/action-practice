@@ -1,32 +1,22 @@
 name: Quality gate
 
 on:
-  workflow_dispatch:
+  issues:
+    types:
+      - labeled
 
 jobs:
-  validate-demo-file-change:
-    name: Check that demo file uploaded
+  run_quality_gate:
+    if: ${{ github.event.label.name == 'demo-available' }}
     runs-on: ubuntu-latest
-    outputs:
-      changed_files: ${{ steps.valid-changes.outputs.changed_files }}
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v34
-        with:
-          separator: ","
-          json: "true"
-          files: |
-            demo/**
-
-      - name: Set changes output
-        id: valid-changes
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: |
-          echo "changed_files are ${{ steps.changed-files.outputs.all_changed_files }}"
-          echo "changed_files=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_OUTPUT
-          echo "continue_flow=true" >> $GITHUB_OUTPUT
-
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: echo Hello, world, quality gate can run
+  # - name: Checkout correct repo and branch
+  #   uses: actions/checkout@v2
+  #   with:
+  #     repository: ${{ needs.pr_details.outputs.REPO }}
+  #     ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
