@@ -6,27 +6,14 @@ on:
 
 jobs:
   pr_details:
-    # This job only runs for
-    # * pull request
-    # * comments
-    # * with a valid demo url - needs regex perhaps?
-    # * from the area-core-rc bot
     name: PR details
-    # if: |
-    #   ${{ github.event.issue.pull_request }} &&
-    #   ${{ contains(github.event.comment.body, 'assigned demo url is')}}) &&
-    #   ${{ github.event.comment.user.name}}
     runs-on: ubuntu-latest
     outputs:
-      PR: ${{ steps.get-pr.outputs.result }}
       REPO: ${{ steps.set-variables.outputs.REPO }}
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
-      COMMENT_USER: ${{ steps.set-variables.outputs.COMMENT_USER }}
-      COMMENT_BODY: ${{ steps.set-variables.outputs.COMMENT_BODY }}
-      ISSUE_URL: ${{ steps.set-variables.outputs.ISSUE_URL }}
 
     steps:
-      - name: Get PR Details
+      - name: Get PR Branch
         uses: actions/github-script@v3
         id: get-pr
         with:
@@ -40,7 +27,7 @@ jobs:
               const pr = await github.pulls.get(prRequest)
               return pr.data
             } catch (err) {
-              core.setFailed(`Request failed with error ${err}`)
+              core.setFailed(`PR fetch request failed with error ${err}`)
             }
 
       - name: Set variables in environment
@@ -48,9 +35,6 @@ jobs:
         run: |
           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
-          echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
-          echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
-          echo "ISSUE_URL=${{ github.event.comment.issue_url }}" >> $GITHUB_OUTPUT
 
   validate_comment:
     name: Validate Comment
@@ -65,7 +49,7 @@ jobs:
           repository: ${{ needs.pr_details.outputs.REPO }}
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
-      - name: print relevant values
+      - name: Return true if valid
         id: validate-comment
         uses: actions/github-script@v6
         with:
@@ -75,21 +59,7 @@ jobs:
             demoRegex = new RegExp('demo.betsson.com');
             isValid = demoRegex.test(context.payload.comment.body);
             console.log(isValid);
-          # console.log(performed_via_github_app could be good to use for bot)
-
-          # branch = "${{ needs.check-area.outputs.branch }}";
-          # tokens = branch.substring((branch.indexOf("/")+1)).split('-');
-          # issue_url = "${{ needs.pr_details.outputs.ISSUE_URL }}";
-          # last_index = issue_url.lastIndexOf('/');
-          # issueNumber = issue_url.substring(last_index + 1);
-          # comment = ${{ needs.pr_details.outputs.COMMENT_BODY }};
-          # user = ${{ needs.pr_details.outputs.COMMENT_USER }};
-          # demoRegex = new RegExp('demo.betsson.com');
-          # isValid = demoRegex.test(comment);
-          # console.log("isValid");
-          # console.log("issue Number is  issueNumber}");
-          # return isValid
-          # result-encoding: string
+            return isValid;
 
   # set_ready_label:
   #   name: Set ready label
