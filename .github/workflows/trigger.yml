@@ -76,15 +76,7 @@ jobs:
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
-      - name: Setup useful environment variables
-        uses: FranzDiebold/github-env-vars-action@v2
       - name: Add label
         env: # Or as an environment variable
           GITHUB_TOKEN: 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
-        run: |
-          gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
-      # - env:
-      #     GH_TOKEN: ${{ secrets.MY_TOKEN }}
-      #     ISSUE_URL: ${{ github.event.issue.html_url }}
-      #   run: |
-      #     gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+        run: gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
