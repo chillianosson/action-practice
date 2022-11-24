@@ -12,22 +12,39 @@ jobs:
     # * with a valid demo url - needs regex perhaps?
     # * from the area-core-rc bot
     name: PR details
-    if: |
-      ${{ github.event.issue.pull_request }} &&
-      ${{ contains(github.event.comment.body, 'assigned demo url is')}}) &&
-      ${{ github.event.comment.user.name}}
+    # if: |
+    #   ${{ github.event.issue.pull_request }} &&
+    #   ${{ contains(github.event.comment.body, 'assigned demo url is')}}) &&
+    #   ${{ github.event.comment.user.name}}
     runs-on: ubuntu-latest
     steps:
+      - name: Get PR Details
+      - uses: actions/github-script@v3
+        id: get-pr
+        with:
+          script: |
+            const prRequest = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            try {
+              const pr = await github.pulls.get(prRequest)
+              console.log('pr.data is ', pr.data);
+              return pr.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+
+      - name: Set PR details in Environment
       - run: |
           echo The PR number is $PR_NUMBER
-          echo The Repo number is $REPO
-          echo The owner number is $OWNER
-          echo The comment user name is $COMMENTER
+          echo The Repo is $REPO
         env:
-          PR_NUMBER: ${{ github.event.issue.number }}
-          REPO: ${{ github.event.repo }}
-          OWNER: ${{ github.event.owner }}
-          COMMENTER: ${{ github.event.comment.user.name }}
+          PR_NUMBER: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          COMMENT: ${{ github.event.comment.body }}
+
 
 
 
