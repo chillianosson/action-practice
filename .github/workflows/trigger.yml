@@ -36,7 +36,6 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
-              console.log('pr.data is ', pr.data);
               return pr.data
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
@@ -60,13 +59,13 @@ jobs:
         with:
           script: |
               comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
+              user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
               console.log('comment is ', comment);
-            # const demoRegex = new RegExp('demo.betsson.com');
-            # const isValidDemoString = demoRegex.test($COMMENT)
-            # console.log('${{ env.COMMENT_USER }} is ', ${{COMMENT_USER}});
-            # console.log('demoRegex is ', demoRegex);
-            # console.log('isValidDemoString is ', isValidDemoString);
-            # console.log('isValidCommenterBot is ', isValidCommenterBot);
+              console.log('user is ', user);
+              const demoRegex = new RegExp('demo.betsson.com');
+              const isValidDemoString = demoRegex.test(comment);
+              console.log('demoRegex is ', demoRegex);
+              console.log('isValidDemoString is ', isValidDemoString);
 
   # get-pr-details:
   #   name: Get relevant details for PR
