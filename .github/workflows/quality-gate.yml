@@ -9,6 +9,8 @@ jobs:
   run_quality_gate:
     # if: ${{ contains(github.event.label.name,'demo-available') }}
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: "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"
 
     steps:
       - uses: actions/checkout@v2
