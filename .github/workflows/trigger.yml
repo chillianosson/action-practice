@@ -74,8 +74,11 @@ jobs:
             const user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
             const demoRegex = new RegExp('demo.betsson.com');
             const isValid = demoRegex.test(comment);
-            console.log('github.event.comment.issue_url is ', ${{ github.event.comment.issue_url }});
-            console.log('github.event.comment.url is ', ${{ github.event.comment.url }});
+            const issue_url = ${{ github.event.comment.issue_url }});
+            const url = ${{ github.event.comment.url }});
+
+            console.log('github.event.comment.issue_url is ', issue_url);
+            console.log('github.event.comment.url is ', url);
             return isValid
 
   # set_ready_label:
