@@ -76,8 +76,15 @@ jobs:
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
-      - env:
-          GITHUB_TOKEN: ${{ secrets.MY_SECRET }}
-          ISSUE_URL: ${{ github.event.issue.html_url }}
-        run: |
-          gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+        - run: |
+           gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+      # - name: Checkout correct repo and branch
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ needs.pr_details.outputs.REPO }}
+      #     ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+      # - name: Add demo available label to PR
+      #   uses: actions-ecosystem/action-add-labels@v1
+
+      #   with:
+      #     labels: "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
