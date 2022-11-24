@@ -77,7 +77,7 @@ jobs:
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
       - env:
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+          GH_TOKEN: ${{ secrets.MY_TOKEN }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
         run: |
           gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
