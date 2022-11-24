@@ -76,8 +76,13 @@ jobs:
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
-      - env:
+      - name: Add label
+        env: # Or as an environment variable
           GH_TOKEN: ${{ secrets.MY_TOKEN }}
-          ISSUE_URL: ${{ github.event.issue.html_url }}
         run: |
           gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+      # - env:
+      #     GH_TOKEN: ${{ secrets.MY_TOKEN }}
+      #     ISSUE_URL: ${{ github.event.issue.html_url }}
+      #   run: |
+      #     gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
