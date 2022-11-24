@@ -40,13 +40,24 @@ jobs:
         run: |
           echo The PR branch is $PR_BRANCH_NAME
           echo The Repo ${owner}/${repo-name} is $REPO
-          echo The comment is $COMMENT
+          echo The comment was by $COMMENT_USER
+          echo The comment is $COMMENT_BODY
         env:
           PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          COMMENT: ${{ fromJSON(github.event.comment) }}
+          COMMENT_USER: ${{ fromJSON(github.event.comment.user.login) }}
+          COMMENT_BODY: ${{ fromJSON(github.event.comment.body) }}
 
-
+      - name: Verify Demo comment - to move to top filter before anything else
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const demoRegex = new RegExp('demo.betsson.com');
+            const isValidDemoString = demoRegex.test(env.COMMENT)
+            const isValidCommenterBot = ( ${{ env.COMMENT_USER }} === "area-core-rc")
+            console.log('demoRegex is ', demoRegex);
+            console.log('isValidDemoString is ', isValidDemoString);
+            console.log('isValidCommenterBot is ', isValidCommenterBot);
 
 
   # get-pr-details:
