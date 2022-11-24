@@ -72,7 +72,7 @@ jobs:
     name: Set ready label and trigger by push
     runs-on: ubuntu-latest
     needs: [validate_comment]
-    if: ${{ needs.validate_comment.verified }}
+    if: ${{ needs.validate_comment.outputs.verified }}
     steps:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v2
