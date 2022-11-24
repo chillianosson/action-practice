@@ -77,7 +77,7 @@ jobs:
         env:
           # GH_TOKEN: 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
           GH_TOKEN: ${{ github.token }}
-        run: gh issue edit ${{ context.payload.issue.number }} --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+        run: gh issue edit "${{ context.payload.issue.number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
 
     #  echo "setting it to ${{ needs.pr_details.outputs.ISSUE_URL.split("/").pop() }}"
