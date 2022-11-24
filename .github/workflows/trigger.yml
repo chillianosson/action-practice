@@ -38,10 +38,11 @@ jobs:
 
       - name: Set PR details in Environment
         run: |
-          echo The PR number is $PR_NUMBER
+          echo The PR branch is $PR_BRANCH_NAME
           echo The Repo is $REPO
+          echo The Repo is $COMMENT
         env:
-          PR_NUMBER: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           COMMENT: ${{ github.event.comment.body }}
 
