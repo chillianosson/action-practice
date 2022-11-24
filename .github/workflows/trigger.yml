@@ -54,11 +54,12 @@ jobs:
           script: |
             const demoRegex = new RegExp('demo.betsson.com');
             const isValidDemoString = demoRegex.test(env.COMMENT)
-            const isValidCommenterBot = ( ${{ env.COMMENT_USER }} == "area-core-rc")
+            if (${{ env.COMMENT_USER }} == 'area-core-rc') {
+              console.log('CORRECT AREA CORE RC USER DETECTED');
+            }
             console.log('demoRegex is ', demoRegex);
             console.log('isValidDemoString is ', isValidDemoString);
             console.log('isValidCommenterBot is ', isValidCommenterBot);
-
 
   # get-pr-details:
   #   name: Get relevant details for PR
