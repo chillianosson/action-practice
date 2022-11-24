@@ -1,18 +1,16 @@
 name: Quality gate
 
 on:
-  workflow_call:
-    inputs:
-      username:
-        description: 'A username passed from the caller workflow'
-        default: 'john-doe'
-        required: true
-        type: string
+  pull_request:
+    types: [labeled]
 
 
 jobs:
-  print-username:
+  run_quality_gate:
+    if: ${{ contains(github.event.label.name,'bug') }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Print the input name to STDOUT
-        run: echo The username is ${{ inputs.username }}
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: echo Hello, world
