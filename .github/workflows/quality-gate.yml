@@ -1,0 +1,17 @@
+name: Quality gate
+
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  run_quality_gate:
+    if: ${{ github.event.label.name == 'demo-available' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: echo Hello, world, quality gate can run
