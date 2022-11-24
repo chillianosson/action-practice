@@ -35,13 +35,6 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
-
-      - name: Set PR details in Environment
-        run: |
-          echo The PR branch is $PR_BRANCH_NAME
-          echo The Repo ${owner}/${repo-name} is $REPO
-          echo The comment was by $COMMENT_USER
-          echo The comment is $COMMENT_BODY
         env:
           PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
@@ -57,6 +50,7 @@ jobs:
             if (${{ env.COMMENT_USER }} == 'area-core-rc') {
               console.log('CORRECT AREA CORE RC USER DETECTED');
             }
+            console.log('${{ env.COMMENT_USER }} is ', ${{ env.COMMENT_USER }});
             console.log('demoRegex is ', demoRegex);
             console.log('isValidDemoString is ', isValidDemoString);
             console.log('isValidCommenterBot is ', isValidCommenterBot);
