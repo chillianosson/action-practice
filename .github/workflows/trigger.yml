@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Details
-      - uses: actions/github-script@v3
+        uses: actions/github-script@v3
         id: get-pr
         with:
           script: |
@@ -37,7 +37,7 @@ jobs:
             }
 
       - name: Set PR details in Environment
-      - run: |
+        run: |
           echo The PR number is $PR_NUMBER
           echo The Repo is $REPO
         env:
