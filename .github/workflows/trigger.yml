@@ -74,11 +74,11 @@ jobs:
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
-      # - name: Checkout correct repo and branch
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: ${{ needs.pr_details.outputs.REPO }}
-      #     ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+      - name: Checkout correct repo and branch
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ needs.pr_details.outputs.REPO }}
+          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
       - name: Add demo available label to PR
         uses: actions-ecosystem/action-add-labels@v1
         with:
