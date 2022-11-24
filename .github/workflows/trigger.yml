@@ -53,12 +53,18 @@ jobs:
           echo "ISSUE_URL=${{ github.event.issue.issue_url }}" >> $GITHUB_OUTPUT
 
   validate_comment:
-    name: Validate Robot Demo Available Comment
+    name: Validate Comment
     runs-on: ubuntu-latest
     needs: [pr_details]
     outputs:
       verified: ${{ steps.validate-comment.outputs.result  == 'true' }}
     steps:
+      - name: Checkout correct repo and branch
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ needs.pr_details.outputs.REPO }}
+          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+
       - name: print relevant values
         id: validate-comment
         uses: actions/github-script@v6
@@ -68,24 +74,25 @@ jobs:
             const user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
             const demoRegex = new RegExp('demo.betsson.com');
             const isValid = demoRegex.test(comment);
+            console.log('github.event.issue is ', github.event.issue);
             return isValid
 
-  set_ready_label:
-    name: Set ready label
-    runs-on: ubuntu-latest
-    needs: [pr_details, validate_comment]
-    if: ${{ needs.validate_comment.outputs.verified }}
-    steps:
-      - name: Checkout correct repo and branch
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ needs.pr_details.outputs.REPO }}
-          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+  # set_ready_label:
+  #   name: Set ready label
+  #   runs-on: ubuntu-latest
+  #   needs: [pr_details, validate_comment]
+  #   if: ${{ needs.validate_comment.outputs.verified }}
+  #   steps:
+  #     - name: Checkout correct repo and branch
+  #       uses: actions/checkout@v2
+  #       with:
+  #         repository: ${{ needs.pr_details.outputs.REPO }}
+  #         ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
-      - name: Add label
-        env: # Or as an environment variable
-          # GH_TOKEN: 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
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh issue edit 6 --add-label "demo-available"
-        # gh issue edit 6 --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+  #     - name: Add label
+  #       env: # Or as an environment variable
+  #         # GH_TOKEN: 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
+  #         GH_TOKEN: ${{ github.token }}
+  #       run: |
+  #         gh issue edit 6 --add-label "demo-available"
+  #       # gh issue edit 6 --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
