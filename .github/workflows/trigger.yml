@@ -72,7 +72,7 @@ jobs:
   trigger_quality-gate:
     name: Trigger Quality Gate with correct branch
     uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-    if: ${{ needs.comment_verification.result == true}}
+    if: ${{ needs.comment_verification.outputs.result == 'true' }}
     needs: [pr_details, comment_verification]
     with:
       username: Chilliano
