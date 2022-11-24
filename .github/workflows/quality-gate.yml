@@ -1,24 +1,18 @@
 name: Quality gate
 
 on:
-  label:
-    types: [created, deleted]
+  workflow_call:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'john-doe'
+        required: true
+        type: string
+
 
 jobs:
-  validate-demo-file-change:
-    name: Check that demo file uploaded
+  print-username:
     runs-on: ubuntu-latest
-    outputs:
-      changed_files: ${{ steps.valid-changes.outputs.changed_files }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set changes output
-        id: valid-changes
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: |
-          echo "changed_files are ${{ steps.changed-files.outputs.all_changed_files }}"
-          echo "changed_files=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_OUTPUT
-          echo "continue_flow=true" >> $GITHUB_OUTPUT
-
+      - name: Print the input name to STDOUT
+        run: echo The username is ${{ inputs.username }}
