@@ -81,8 +81,8 @@ jobs:
             user = ${{ needs.pr_details.outputs.COMMENT_USER }};
             demoRegex = new RegExp('demo.betsson.com');
             isValid = demoRegex.test(comment);
-            console.log(`is valid is ${{isValid}}`);
-            console.log("issueNumber is ${{ issueNumber }}");
+            console.log("isValid");
+            console.log("issue Number is  issueNumber}");
             return isValid
 
   # set_ready_label:
