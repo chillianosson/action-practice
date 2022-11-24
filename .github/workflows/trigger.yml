@@ -78,7 +78,7 @@ jobs:
     steps:
       - name: Add label
         env: # Or as an environment variable
-          GH_TOKEN: ${{ secrets.MY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
         run: |
           gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
       # - env:
