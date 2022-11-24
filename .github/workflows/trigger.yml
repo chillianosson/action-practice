@@ -12,7 +12,10 @@ jobs:
     # * with a valid demo url - needs regex perhaps?
     # * from the area-core-rc bot
     name: PR details
-    if: ${{ github.event.issue.pull_request }} && ${{ contains(github.event.comment.body, 'assigned demo url is') && ${{ github.event.comment.user.name}}  }}
+    if: |
+      ${{ github.event.issue.pull_request }} &&
+      ${{ contains(github.event.comment.body, 'assigned demo url is')}}) &&
+      ${{ github.event.comment.user.name}}
     runs-on: ubuntu-latest
     steps:
       - run: |
