@@ -50,12 +50,15 @@ jobs:
           echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
           echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
 
-  comment_verification:
-    name: Verify Demo Comment
+  validate_comment:
+    name: Validate Robot Demo Available Comment
     runs-on: ubuntu-latest
     needs: [pr_details]
+    outputs:
+      verified: ${{ steps.validate-comment.outputs.result  == 'true' }}
     steps:
       - name: print relevant values
+        id: validate-comment
         uses: actions/github-script@v6
         with:
           script: |
@@ -72,7 +75,7 @@ jobs:
   trigger_quality-gate:
     name: Trigger Quality Gate with correct branch
     uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
-    if: ${{ needs.comment_verification.outputs.result == 'true' }}
+    if: ${{ needs.validate_comment.verified }}
     needs: [pr_details, comment_verification]
     with:
       username: Chilliano
