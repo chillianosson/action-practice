@@ -47,7 +47,7 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body }}
 
       - name: Verify Demo comment - to move to top filter before anything else
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
             const demoRegex = new RegExp('demo.betsson.com');
