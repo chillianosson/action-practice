@@ -23,9 +23,10 @@ jobs:
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
       COMMENT_USER: ${{ steps.set-variables.outputs.COMMENT_USER }}
       COMMENT_BODY: ${{ steps.set-variables.outputs.COMMENT_BODY }}
+
     steps:
       - name: Get PR Details
-        uses: actions/github-script@v6
+        uses: actions/github-script@v3
         id: get-pr
         with:
           script: |
@@ -69,6 +70,7 @@ jobs:
             return isValidDemoString
 
   trigger_quality-gate:
+    name: Trigger Quality Gate with correct branch
     uses: chillianosson/action-practice/.github/workflows/quality-gate.yml@main
     if: ${{ needs.comment_verification.result == 'true'}}
     needs: [pr_details, comment_verification]
