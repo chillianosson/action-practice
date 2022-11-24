@@ -52,9 +52,6 @@ jobs:
           script: |
             const demoRegex = new RegExp('demo.betsson.com');
             const isValidDemoString = demoRegex.test(env.COMMENT)
-            if (${{ env.COMMENT_USER }} == 'area-core-rc') {
-              console.log('CORRECT AREA CORE RC USER DETECTED');
-            }
             console.log('${{ env.COMMENT_USER }} is ', ${{ env.COMMENT_USER }});
             console.log('demoRegex is ', demoRegex);
             console.log('isValidDemoString is ', isValidDemoString);
