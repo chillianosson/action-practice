@@ -23,7 +23,7 @@ jobs:
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
       COMMENT_USER: ${{ steps.set-variables.outputs.COMMENT_USER }}
       COMMENT_BODY: ${{ steps.set-variables.outputs.COMMENT_BODY }}
-      ISSUE_URL: ${{ steps.set-variables.outputs.ISSUE_URL }}
+      ISSUE_NUMBER: ${{ steps.set-variables.outputs.ISSUE_NUMBER }}
 
     steps:
       - name: Get PR Details
@@ -50,7 +50,7 @@ jobs:
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
           echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
           echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
-          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_OUTPUT
+          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
 
   validate_comment:
     name: Validate Robot Demo Available Comment
@@ -80,7 +80,7 @@ jobs:
         env: # Or as an environment variable
           GITHUB_TOKEN: "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"
         run: |
-          gh issue edit ${{ needs.pr_details.outputs.ISSUE_URL }} --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+          gh issue edit ${{ needs.pr_details.outputs.ISSUE_NUMBER }} --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
       # - env:
       #     GH_TOKEN: ${{ secrets.MY_TOKEN }}
       #     ISSUE_URL: ${{ github.event.issue.html_url }}
