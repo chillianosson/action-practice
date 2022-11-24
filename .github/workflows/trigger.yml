@@ -35,6 +35,9 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
+
+      - name: Set variables in environment
+        uses: actions/github-script@v3
         env:
           PR_BRANCH_NAME: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           REPO: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
