@@ -23,6 +23,7 @@ jobs:
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
       COMMENT_USER: ${{ steps.set-variables.outputs.COMMENT_USER }}
       COMMENT_BODY: ${{ steps.set-variables.outputs.COMMENT_BODY }}
+      ISSUE_URL: ${{ steps.set-variables.outputs.ISSUE_URL }}
 
     steps:
       - name: Get PR Details
@@ -49,6 +50,7 @@ jobs:
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
           echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
           echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
+          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_OUTPUT
 
   validate_comment:
     name: Validate Robot Demo Available Comment
@@ -74,12 +76,8 @@ jobs:
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
-      - name: Checkout correct repo and branch
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ needs.pr_details.outputs.REPO }}
-          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
-      - name: Add demo available label to PR
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          labels: "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+      - env:
+          GITHUB_TOKEN: ${{ secrets.MY_SECRET }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          gh issue edit $ISSUE_URL --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"

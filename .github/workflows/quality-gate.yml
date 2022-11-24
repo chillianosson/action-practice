@@ -1,16 +1,21 @@
 name: Quality gate
 
 on:
-  issues:
+  label:
     types:
-      - labeled
+      - created
 
 jobs:
   run_quality_gate:
-    if: ${{ contains(github.event.label.name,'demo-available') }}
+    # if: ${{ contains(github.event.label.name,'demo-available') }}
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - name: Run a one-line script
         run: echo Hello, world, quality gate can run
+ # - name: Checkout correct repo and branch
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ needs.pr_details.outputs.REPO }}
+      #     ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
