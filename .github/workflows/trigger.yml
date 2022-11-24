@@ -67,7 +67,7 @@ jobs:
 
       - name: print relevant values
         id: validate-comment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v3
         with:
           script: |
             const comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
