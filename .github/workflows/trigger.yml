@@ -6,27 +6,13 @@ on:
 
 jobs:
   pr_details:
-    # This job only runs for
-    # * pull request
-    # * comments
-    # * with a valid demo url - needs regex perhaps?
-    # * from the area-core-rc bot
     name: PR details
-    # if: |
-    #   ${{ github.event.issue.pull_request }} &&
-    #   ${{ contains(github.event.comment.body, 'assigned demo url is')}}) &&
-    #   ${{ github.event.comment.user.name}}
     runs-on: ubuntu-latest
     outputs:
-      PR: ${{ steps.get-pr.outputs.result }}
       REPO: ${{ steps.set-variables.outputs.REPO }}
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
-      COMMENT_USER: ${{ steps.set-variables.outputs.COMMENT_USER }}
-      COMMENT_BODY: ${{ steps.set-variables.outputs.COMMENT_BODY }}
-      ISSUE_URL: ${{ steps.set-variables.outputs.ISSUE_URL }}
-
     steps:
-      - name: Get PR Details
+      - name: Get PR Branch
         uses: actions/github-script@v3
         id: get-pr
         with:
@@ -40,7 +26,7 @@ jobs:
               const pr = await github.pulls.get(prRequest)
               return pr.data
             } catch (err) {
-              core.setFailed(`Request failed with error ${err}`)
+              core.setFailed(`PR fetch request failed with error ${err}`)
             }
 
       - name: Set variables in environment
@@ -48,9 +34,6 @@ jobs:
         run: |
           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
-          echo "COMMENT_USER=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
-          echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
-          echo "ISSUE_URL=${{ github.event.comment.issue_url }}" >> $GITHUB_OUTPUT
 
   validate_comment:
     name: Validate Comment
@@ -58,6 +41,7 @@ jobs:
     needs: [pr_details]
     outputs:
       verified: ${{ steps.validate-comment.outputs.result  == 'true' }}
+      issue_number: ${{ steps.get-issue-number.outputs.result }}
     steps:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v2
@@ -65,38 +49,58 @@ jobs:
           repository: ${{ needs.pr_details.outputs.REPO }}
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
-      - name: print relevant values
+      - name: Return true if valid
         id: validate-comment
         uses: actions/github-script@v6
         with:
           script: |
-            const comment = "${{ needs.pr_details.outputs.COMMENT_BODY }}";
-            const user = "${{ needs.pr_details.outputs.COMMENT_USER }}";
-            const demoRegex = new RegExp('demo.betsson.com');
-            const isValid = demoRegex.test(comment);
-            const issue_url = ${{ github.event.comment.issue_url }};
-            const issueNumber = (${{ github.event.comment.url }}).split("/").pop();
-            console.log('github.event.comment.issue_url is ', issue_url);
-            console.log('issueNumber is ', issueNumber);
-            return isValid
+            console.log(context.payload.issue.number)
+            console.log(context.payload.comment.body)
+            demoRegex = new RegExp('demo.betsson.com');
+            isValid = demoRegex.test(context.payload.comment.body);
+            console.log(isValid);
+            return isValid;
 
-  # set_ready_label:
-  #   name: Set ready label
-  #   runs-on: ubuntu-latest
-  #   needs: [pr_details, validate_comment]
-  #   if: ${{ needs.validate_comment.outputs.verified }}
-  #   steps:
-  #     - name: Checkout correct repo and branch
-  #       uses: actions/checkout@v2
-  #       with:
-  #         repository: ${{ needs.pr_details.outputs.REPO }}
-  #         ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+      - name: Get Issue Number
+        id: get-issue-number
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(context.payload.issue.number)
+            return context.payload.issue.number;
 
-  #     - name: Add label
-  #       env: # Or as an environment variable
-  #         # GH_TOKEN: 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
-  #         GH_TOKEN: ${{ github.token }}
-  #       run: |
-  #         echo "setting it to ${{ needs.pr_details.outputs.ISSUE_URL.split("/").pop() }}"
+  set_ready_label:
+    name: Set ready label
+    runs-on: ubuntu-latest
+    needs: [pr_details, validate_comment]
+    if: ${{ needs.validate_comment.outputs.verified }}
+    steps:
+      - name: Checkout correct repo and branch
+        uses: actions/checkout@v3
+        with:
+          # repository: ${{ needs.pr_details.outputs.REPO }}
+          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
-        # gh issue edit ${{ needs.pr_details.outputs.ISSUE_URL).split("/").pop() }} --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+      - name: Add label
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+
+      - name: Setup useful environment variables
+        uses: FranzDiebold/github-env-vars-action@v2
+
+      - name: Git Status
+        run: |
+          git status
+
+      - name: Setup Node Version
+        uses: actions/setup-node@v1
+        with:
+          always-auth: false
+          node-version: "16.x"
+
+      - name: Push the change
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run quality-gate.yml --ref ${{ needs.pr_details.outputs.PR_BRANCH }}
