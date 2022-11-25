@@ -1,9 +1,8 @@
 name: Quality gate
 
 on:
-  issues:
-    types:
-      - labeled
+  pull_request:
+    types: [labeled]
 
 jobs:
   run_quality_gate:
