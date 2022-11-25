@@ -84,9 +84,9 @@ jobs:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v3
         with:
-          repository: ${{ needs.pr_details.outputs.REPO }}
-          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
           token: ${{ secrets.PAT }}
+          # repository: ${{ needs.pr_details.outputs.REPO }}
+          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
           fetch-depth: 0
 
       - name: Check Github User
