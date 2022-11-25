@@ -5,12 +5,13 @@ on:
     types:
       - labeled
 
+
 jobs:
   run_quality_gate:
-    if: ${{ github.event.label.name == 'demo-available' }}
+    if: ${{ github.event.label.name == 'demo-available-for-branch-trigger-test' }}
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ github.token }}
+     token: ${{ github.token }}
     steps:
       - uses: actions/checkout@v2
       - name: Run a one-line script
