@@ -103,7 +103,7 @@ jobs:
       - name: Push the change
         run:  |
           touch demo-url.txt
-          Test-url.com >> demo-url.txt
+          echo "Test-url.com" >> demo-url.txt
           git add demo-url.txt
           git commit -m "demo-available"
           git push
