@@ -1,7 +1,6 @@
 name: Quality gate
 
 on:
-  pull_request:
   issues:
     types:
       - labeled
@@ -12,6 +11,8 @@ env:
 jobs:
   run_quality_gate:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     # id: quality-gate
     # if: ${{ contains(github.event.label.name, 'demo-available') }}
     steps:
