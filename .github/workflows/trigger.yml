@@ -102,17 +102,4 @@ jobs:
 
       - name: Push the change
         run: |
-          date > generated2.txt
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "demo-available"
-          git push
-        # run:  |
-          # git config --global user.email "cillian.omurchu@betssongroup.com"
-          # git config --global user.name "Cillian O Murchu"
-          # touch demo-url2.txt
-          # git add demo-url2.txt
-          # git commit -m "demo-available"
-          # git push
-
+          gh workflow run quality-gate.yml --ref ${{ needs.pr_details.outputs.PR_BRANCH }}
