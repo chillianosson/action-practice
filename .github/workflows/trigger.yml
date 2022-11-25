@@ -83,7 +83,7 @@ jobs:
 
       - name: Add label
         run: |
-          gh auth login --with-token < ${{ secrets.PAT }}
+          gh auth login --with-token < <(echo ${{secrets.PAT}})
           gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
       # - name: Setup useful environment variables
