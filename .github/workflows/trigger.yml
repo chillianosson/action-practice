@@ -104,7 +104,7 @@ jobs:
         run:  |
           git config --global user.email "cillian.omurchu@betssongroup.com"
           git config --global user.name "Cillian O Murchu"
-          touch demo-url.txt
-          git add demo-url.txt
+          touch demo-url2.txt
+          git add demo-url2.txt
           git commit -m "demo-available"
           git push
