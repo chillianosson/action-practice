@@ -66,8 +66,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-           console.log(context.payload.issue.number)
-           return context.payload.issue.number;
+            console.log(context.payload.issue.number)
+            return context.payload.issue.number;
 
   set_ready_label:
     name: Set ready label
@@ -76,13 +76,34 @@ jobs:
     if: ${{ needs.validate_comment.outputs.verified }}
     steps:
       - name: Checkout correct repo and branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ${{ needs.pr_details.outputs.REPO }}
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+          token: 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
 
       - name: Add label
         env:
-          # GH_TOKEN: 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
           GH_TOKEN: ${{ github.token }}
         run: gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+
+      - name: Setup useful environment variables
+        uses: FranzDiebold/github-env-vars-action@v2
+
+      - name: Git Status
+        run: |
+          git status
+
+      - name: Setup Node Version
+        uses: actions/setup-node@v1
+        with:
+          always-auth: false
+          node-version: "16.x"
+
+      - name: Push the change
+        run:  |
+          touch demo-url.txt
+          Test-url.com >> demo-url.txt
+          git add demo-url.txt
+          git commit -m "demo-available"
+          git push
