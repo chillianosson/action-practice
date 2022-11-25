@@ -1,16 +1,23 @@
 name: Quality gate
 
 on:
+  workflow_dispatch:
+    branches-ignore:
+      - main
+
   push:
     branches-ignore:
       - main
 
 jobs:
   run_quality_gate:
-    if: "contains(github.event.head_commit.message, 'demo-available')"
+    # if: "contains(github.event.head_commit.message, 'demo-available')"
     runs-on: ubuntu-latest
     env:
-     token: ${{ github.token }}
+      token: ${{ secrets.MY_TOKEN }}
+    # GH_TOKEN: ${{ secrets.OBG_GHACTION_TOKEN }}
+
+
     steps:
       - uses: actions/checkout@v2
       - name: Run a one-line script

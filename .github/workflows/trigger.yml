@@ -80,7 +80,7 @@ jobs:
         with:
           # repository: ${{ needs.pr_details.outputs.REPO }}
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
-          token: ${{ github.token }}
+
 
       - name: Add label
         env:
@@ -101,10 +101,18 @@ jobs:
           node-version: "16.x"
 
       - name: Push the change
-        run:  |
-          git config --global user.email "cillian.omurchu@betssongroup.com"
-          git config --global user.name "Cillian O Murchu"
-          touch demo-url2.txt
-          git add demo-url2.txt
-          git commit -m "demo-available"
+        run: |
+          date > generated.txt
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generated"
           git push
+        # run:  |
+          # git config --global user.email "cillian.omurchu@betssongroup.com"
+          # git config --global user.name "Cillian O Murchu"
+          # touch demo-url2.txt
+          # git add demo-url2.txt
+          # git commit -m "demo-available"
+          # git push
+
