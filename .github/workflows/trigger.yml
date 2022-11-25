@@ -85,6 +85,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PAT }}
         run: |
+          echo ${{ secrets.PAT }} | gh auth login --with-token
           gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
       # - name: Setup useful environment variables
