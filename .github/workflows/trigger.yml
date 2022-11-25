@@ -83,8 +83,9 @@ jobs:
 
       - name: Add label
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+          GH_TOKEN: ${{ secrets.PAT }}
+        run: |
+          gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
       # - name: Setup useful environment variables
       #   uses: FranzDiebold/github-env-vars-action@v2
