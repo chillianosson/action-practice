@@ -75,6 +75,7 @@ jobs:
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
     env:
+      token: ${{ secrets.PAT }}
 
     steps:
       - name: Checkout correct repo and branch
