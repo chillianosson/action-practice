@@ -102,6 +102,8 @@ jobs:
 
       - name: Push the change
         run:  |
+          git config --global user.email "cillian.omurchu@betssongroup.com"
+          git config --global user.name "Cillian O Murchu"
           touch demo-url.txt
           echo "Test-url.com" >> demo-url.txt
           git add demo-url.txt
