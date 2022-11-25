@@ -83,22 +83,22 @@ jobs:
           git config --global user.name "chillianosson"
           git config --global user.email "cillian.omurchu@betssongroup.com"
 
-      - name: Check Github User
-        run: |
-          git --version
-          git config user.name 'chillianosson'
-          git config user.email 'cillian.omurchu@betssongroup.com'
-          git config user.name
-          git config user.email
+      # - name: Check Github User
+      #   run: |
+      #     git --version
+      #     git config user.name 'chillianosson'
+      #     git config user.email 'cillian.omurchu@betssongroup.com'
+      #     git config user.name
+      #     git config user.email
         # env:
           # NODE_AUTH_TOKEN: ${{ secrets.PAT }}
 
-      # - name: Checkout correct repo and branch
-        # uses: actions/checkout@v3
-        # with:
-          # token: ${{ secrets.PAT }}
+      - name: Checkout correct repo and branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
           # repository: ${{ needs.pr_details.outputs.REPO }}
-          # ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
           # fetch-depth: 0
 
 
