@@ -11,7 +11,6 @@ jobs:
     outputs:
       REPO: ${{ steps.set-variables.outputs.REPO }}
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
-
     steps:
       - name: Get PR Branch
         uses: actions/github-script@v3
@@ -42,7 +41,7 @@ jobs:
     needs: [pr_details]
     outputs:
       verified: ${{ steps.validate-comment.outputs.result  == 'true' }}
-      branch: ${{ steps.set-issue-number.outputs.issue_number }}
+      issue_number: ${{ steps.get-issue-number.outputs.result }}
     steps:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v2
@@ -62,10 +61,13 @@ jobs:
             console.log(isValid);
             return isValid;
 
-      - name: Add context to environment
-        id: set-issue-number
-        run: echo "issue_number=${{ context.payload.comment.issue.number }}" >> $GITHUB_OUTPUT
-
+      - name: Get Issue Number
+        id: get-issue-number
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(context.payload.comment.issue.number)
+            return context.payload.comment.issue.number;
 
   set_ready_label:
     name: Set ready label
@@ -83,4 +85,4 @@ jobs:
         env:
           # GH_TOKEN: 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
           GH_TOKEN: ${{ github.token }}
-        run: gh issue edit "${{ needs.validate_comment.issue.number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+        run: gh issue edit "${{ needs.validate_comment.get-issue-number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
