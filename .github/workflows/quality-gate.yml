@@ -1,8 +1,9 @@
 name: Quality gate
 
 on:
-  workflow_dispatch:
   push:
+    branches:
+      - main
 
 jobs:
   run_quality_gate:
@@ -11,8 +12,6 @@ jobs:
     # env:
       # token: ${{ secrets.MY_TOKEN }}
     # GH_TOKEN: ${{ secrets.OBG_GHACTION_TOKEN }}
-
-
     steps:
       - uses: actions/checkout@v2
       - name: Run a one-line script
