@@ -80,8 +80,8 @@ jobs:
     steps:
       - name: Prepare Permissions
         run: |
-          git config -global user.name "chillianosson"
-          git config -global user.email "cillian.omurchu@betssongroup.com"
+          git config --global user.name "chillianosson"
+          git config --global user.email "cillian.omurchu@betssongroup.com"
 
       - name: Check Github User
         run: |
