@@ -101,14 +101,10 @@ jobs:
           # repository: ${{ needs.pr_details.outputs.REPO }}
           # fetch-depth: 0
 
-
-
-      # - name: Add label
-      #   run: |
-      #     git remote rm origin
-      #     git remote add origin 'git@github.com:chillianosson/action-practice.git'
-      #     gh auth login --with-token < <(echo ${{secrets.PAT}})
-      #     gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+      - name: Add label
+        run: |
+          gh auth login --with-token < <(echo ${{secrets.PAT}})
+          gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
       # - name: Setup useful environment variables
       #   uses: FranzDiebold/github-env-vars-action@v2
