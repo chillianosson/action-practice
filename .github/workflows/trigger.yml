@@ -66,9 +66,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(context.payload.comment.issue.number)
-
-           # return context.payload.comment.issue.number;
+           return context.payload.comment.issue.number;
 
   # set_ready_label:
   #   name: Set ready label
