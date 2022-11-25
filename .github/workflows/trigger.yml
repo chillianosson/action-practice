@@ -42,6 +42,8 @@ jobs:
     needs: [pr_details]
     outputs:
       verified: ${{ steps.validate-comment.outputs.result  == 'true' }}
+      branch: ${{ steps.validate-comment.outputs.branch }}
+
     steps:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v2
@@ -74,12 +76,9 @@ jobs:
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
       - name: Add label
-        env:
+        # env:
           # GH_TOKEN: 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
-          GH_TOKEN: ${{ github.token }}
-        run: gh issue edit "${{ context.payload.issue.number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
-
+          # GH_TOKEN: ${{ github.token }}
+        run: gh issue edit ${{ needs.validate_comment.issue.number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
     #  echo "setting it to ${{ needs.pr_details.outputs.ISSUE_URL.split("/").pop() }}"
-
-
