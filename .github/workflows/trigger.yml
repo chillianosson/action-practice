@@ -81,7 +81,6 @@ jobs:
           # repository: ${{ needs.pr_details.outputs.REPO }}
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
-
       - name: Add label
         env:
           GH_TOKEN: ${{ github.token }}
@@ -101,5 +100,7 @@ jobs:
           node-version: "16.x"
 
       - name: Push the change
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run quality-gate.yml --ref ${{ needs.pr_details.outputs.PR_BRANCH }}
