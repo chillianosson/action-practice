@@ -1,19 +1,28 @@
 name: Quality gate
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+      - labeled
 
 jobs:
   run_quality_gate:
     runs-on: ubuntu-latest
+    # id: quality-gate
+    if: ${{ contains(github.event.label.name, 'demo-available') }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Run a one-line script
-        env:
-          GH_TOKEN: ${{ secrets.OBG_GHACTION_TOKEN }}
-        run: echo Hello, world, quality gate can run
-  # - name: Checkout correct repo and branch
-  #   uses: actions/checkout@v2
-  #   with:
-  #     repository: ${{ needs.pr_details.outputs.REPO }}
-  #     ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+    - name: Run tests
+      run: echo Hello, world, quality gate can run
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   run_quality_gate:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Run a one-line script
+#         env:
+#           GH_TOKEN: ${{ secrets.OBG_GHACTION_TOKEN }}
+#         run: echo Hello, world, quality gate can run

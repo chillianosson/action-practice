@@ -86,21 +86,21 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
-      - name: Setup useful environment variables
-        uses: FranzDiebold/github-env-vars-action@v2
+      # - name: Setup useful environment variables
+      #   uses: FranzDiebold/github-env-vars-action@v2
 
-      - name: Git Status
-        run: |
-          git status
+      # - name: Git Status
+      #   run: |
+      #     git status
 
-      - name: Setup Node Version
-        uses: actions/setup-node@v1
-        with:
-          always-auth: false
-          node-version: "16.x"
+      # - name: Setup Node Version
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     always-auth: false
+      #     node-version: "16.x"
 
-      - name: Push the change
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run quality-gate.yml --ref ${{ needs.pr_details.outputs.PR_BRANCH }}
+      # - name: Push the change
+      #   env:
+      #     GH_TOKEN: ${{ github.token }}
+      #   run: |
+      #     gh workflow run quality-gate.yml --ref ${{ needs.pr_details.outputs.PR_BRANCH }}
