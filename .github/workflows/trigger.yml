@@ -78,16 +78,10 @@ jobs:
       token: ${{ secrets.PAT }}
 
     steps:
-      # - name: Prepare Permissions
-      #   run: sudo chown ubuntu:ubuntu -R ../*
-
-      - name: Checkout correct repo and branch
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PAT }}
-          # repository: ${{ needs.pr_details.outputs.REPO }}
-          ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
-          fetch-depth: 0
+      - name: Prepare Permissions
+        run: |
+          git config -global user.name "chillianosson"
+          git config -global user.email "cillian.omurchu@betssongroup.com"
 
       - name: Check Github User
         run: |
@@ -96,15 +90,25 @@ jobs:
           git config user.email 'cillian.omurchu@betssongroup.com'
           git config user.name
           git config user.email
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT }}
+        # env:
+          # NODE_AUTH_TOKEN: ${{ secrets.PAT }}
 
-      - name: Add label
-        run: |
-          git remote rm origin
-          git remote add origin 'git@github.com:chillianosson/action-practice.git'
-          gh auth login --with-token < <(echo ${{secrets.PAT}})
-          gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+      # - name: Checkout correct repo and branch
+        # uses: actions/checkout@v3
+        # with:
+          # token: ${{ secrets.PAT }}
+          # repository: ${{ needs.pr_details.outputs.REPO }}
+          # ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+          # fetch-depth: 0
+
+
+
+      # - name: Add label
+      #   run: |
+      #     git remote rm origin
+      #     git remote add origin 'git@github.com:chillianosson/action-practice.git'
+      #     gh auth login --with-token < <(echo ${{secrets.PAT}})
+      #     gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
       # - name: Setup useful environment variables
       #   uses: FranzDiebold/github-env-vars-action@v2
