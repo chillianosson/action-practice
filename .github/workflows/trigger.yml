@@ -74,16 +74,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: [pr_details, validate_comment]
     if: ${{ needs.validate_comment.outputs.verified }}
+    env:
+
     steps:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v3
         with:
           # repository: ${{ needs.pr_details.outputs.REPO }}
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
+          token: ${{ secrets.PAT }}
 
       - name: Add label
         run: |
-          gh auth login --with-token < <(echo ${{secrets.PAT}})
+          gh auth login --with-token < <(echo ${{ secrets.PAT }})
           gh issue edit "${{ needs.validate_comment.outputs.issue_number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
 
       # - name: Setup useful environment variables
