@@ -42,8 +42,7 @@ jobs:
     needs: [pr_details]
     outputs:
       verified: ${{ steps.validate-comment.outputs.result  == 'true' }}
-      branch: ${{ steps.validate-comment.outputs.branch }}
-
+      branch: ${{ steps.set-issue-number.outputs.issue_number }}
     steps:
       - name: Checkout correct repo and branch
         uses: actions/checkout@v2
@@ -62,6 +61,11 @@ jobs:
             isValid = demoRegex.test(context.payload.comment.body);
             console.log(isValid);
             return isValid;
+
+      - name: Add context to environment
+        id: set-issue-number
+        run: echo "issue_number=${{ context.payload.comment.issue.number }}" >> $GITHUB_OUTPUT
+
 
   set_ready_label:
     name: Set ready label
