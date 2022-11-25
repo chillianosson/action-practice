@@ -1,14 +1,13 @@
 name: Quality gate
 
 on:
-  issues:
-    types:
-      - labeled
-
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   run_quality_gate:
-    if: ${{ github.event.label.name == 'demo-available-for-branch-trigger-test' }}
+    if: "contains(github.event.head_commit.message, 'demo-available')"
     runs-on: ubuntu-latest
     env:
      token: ${{ github.token }}
