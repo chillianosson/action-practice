@@ -66,6 +66,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+           console.log(context.payload.issue.number)
            return context.payload.issue.number;
 
   set_ready_label:
