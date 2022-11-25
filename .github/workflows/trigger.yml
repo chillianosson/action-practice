@@ -76,7 +76,7 @@ jobs:
           ref: ${{ needs.pr_details.outputs.PR_BRANCH }}
 
       - name: Add label
-        # env:
+        env:
           # GH_TOKEN: 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
-          # GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: gh issue edit "${{ needs.validate_comment.issue.number }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
