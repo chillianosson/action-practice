@@ -25,6 +25,7 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
+              console.log('pr data is ', pr.data);
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
@@ -33,7 +34,7 @@ jobs:
       - name: Set variables in environment
         id: set-variables
         run: |
-          echo "fromJSON(steps.get-pr.outputs.result) is ${{ fromJSON(steps.get-pr.outputs.result) }}"
+          echo "fromJSON(steps.get-pr.outputs.result).head is ${{ fromJSON(steps.get-pr.outputs.result).head }}"
           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_ENV
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_ENV
 
