@@ -9,7 +9,7 @@ env:
 
 jobs:
   pr_details:
-    if: ${{ contains(github.event.comment.body), 'Assigned demo url is'}
+    if: ${{ contains(github.event.comment.body), 'Assigned demo url is'}}
     name: PR details
     runs-on: ubuntu-latest
     steps:
