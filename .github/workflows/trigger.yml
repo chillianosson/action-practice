@@ -33,9 +33,11 @@ jobs:
       - name: Set variables in environment
         id: set-variables
         run: |
+          echo "fromJSON(steps.get-pr.outputs.result) is ${{ fromJSON(steps.get-pr.outputs.result) }}"
           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_ENV
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_ENV
-          echo "ISSUE=${{ context.payload.issue.number }}" >> $GITHUB_ENV
+
+        # echo "ISSUE=${{ context.payload.issue.number }}" >> $GITHUB_ENV
 
   set_ready_label:
     name: Set ready label
@@ -52,4 +54,6 @@ jobs:
 
       - name: Add label
         run: |
-          gh issue edit "${{ env.ISSUE }}" --add-label "demo-available-for-branch-${{ env.PR_BRANCH }}"
+          gh issue edit 6 --add-label "demo-available-for-branch-${{ env.PR_BRANCH }}"
+
+       # gh issue edit "${{ env.ISSUE }}" --add-label "demo-available-for-branch-${{ env.PR_BRANCH }}"
