@@ -15,6 +15,7 @@ jobs:
     outputs:
       REPO: ${{ steps.set-variables.outputs.REPO }}
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
+      ISSUE: ${{ steps.set-variables.outputs.ISSUE }}
     steps:
       - name: Get PR Branch
         uses: actions/github-script@v3
@@ -56,5 +57,4 @@ jobs:
 
       - name: Add label
         run: |
-          echo "${{ fromJSON(needs.pr_details.outputs) }}"
-          gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.result.PR_BRANCH }}"
+          gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
