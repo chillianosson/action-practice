@@ -56,4 +56,6 @@ jobs:
 
       - name: Add label
         run: |
+          echo 'outputs': '${{ needs.pr_details.outputs }}'
+          echo 'outputs': '${{ fromJSON(needs.pr_details.outputs) }}'
           gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
