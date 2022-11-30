@@ -17,6 +17,12 @@ jobs:
       BRANCH: ${{ steps.set-details.outputs.BRANCH }}
       PR_NUMBER: ${{ steps.set-details.outputs.PR_NUMBER }}
     steps:
+      - name: Setup Node Version
+        uses: actions/setup-node@v3
+        with:
+          always-auth: false
+          node-version: "16.x"
+
       - name: Get Pr data
         id: get-pr-data
         uses: actions/github-script@v3
