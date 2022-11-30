@@ -4,75 +4,56 @@ on:
   issue_comment:
     types: [created, edited]
 
-# env:
-  # GH_TOKEN: ${{ secrets.PAT }}
 env:
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-#   pr_details:
-#     if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
-# # && (github.event.comment.user.type == "Bot") -- to be added for adaptive repo final check
-#     name: PR details
-#     runs-on: ubuntu-latest
-#     outputs:
-#       REPO: ${{ steps.set-variables.outputs.REPO }}
-#       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
-#       ISSUE: ${{ steps.set-variables.outputs.ISSUE }}
-#     steps:
-#       - name: Get Pr Details
-#         id: get-pr
-#         uses: actions/github-script@v3
-#         with:
-#           script: |
-#             const prRequest = {
-#               owner: context.repo.owner,
-#               repo: context.repo.repo,
-#               pull_number: context.issue.number
-#             }
-#             try {
-#               const pr = await github.pulls.get(prRequest)
-#               return pr.data
-#             } catch (err) {
-#               core.setFailed(`PR fetch request failed with error ${err}`)
-#             }
+  get_branch_name:
+    if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
+    # && (github.event.comment.user.type == "Bot") -- to be added for adaptive repo final check
+    name: Branch Name
+    runs-on: ubuntu-latest
+    outputs:
+      PR_BRANCH: ${{ steps.get-branch.outputs.PR_BRANCH }}
+    steps:
+      - name: Get Pr data
+        id: get-pr
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const prRequest = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            try {
+              const pr = await github.pulls.get(prRequest)
+              return pr.data
+            } catch (err) {
+              core.setFailed(`PR fetch request failed with error ${err}`)
+            }
 
-#       - name: Set variables in environment
-#         id: set-variables
-#         run: |
-#           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
-#           echo "ISSUE=${{ fromJSON(steps.get-pr.outputs.result).number }}" >> $GITHUB_OUTPUT
-#           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
+      - name: Get Branch
+        id: get-branch
+        run: |
+          echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
 
   set_ready_label:
     name: Set ready label
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
-    # env:
-      # token: ${{ secrets.PAT }}
-
+    needs: [get_branch_name]
     steps:
       - name: Setup useful environment variables
         uses: FranzDiebold/github-env-vars-action@v2
 
-
-      - name: Checkout correct repo and branch
+      - name: Checkout branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.CI_ACTION_REF_NAME }}
-          # token: ${{ secrets.PAT }}
-
+          ref: ${{ needs.get_branch_name.outputs.PR_BRANCH }}
 
       - name: Add label
-        if: ${{env.CI_ACTION_REF_NAME != 'master' && !startsWith(env.CI_ACTION_REF_NAME, 'release') }}
         run: |
-          set -u
-          echo "$GITHUB_TOKEN" > .githubtoken
-          unset GITHUB_TOKEN
-          gh auth login --with-token < .githubtoken
-          rm .githubtoken
-          gh pr edit ${{env.CI_ACTION_REF_NAME}} --add-label "demo-available-cillian
-
-        # echo "$GITHUB_TOKEN" > .githubtoken
-        # unset GITHUB_TOKEN
-        # gh auth login --with-token < <(echo ${{ secrets.PAT }})
+          filename='token.txt'
+          echo ${secrets.PAT} >> $filename
+          gh auth login --with-token < $filename
+          gh pr edit ${{env.CI_ACTION_REF_NAME}} --add-label "demo"
