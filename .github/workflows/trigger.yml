@@ -58,7 +58,7 @@ jobs:
       - name: Add label
         run: |
           echo ${{ secrets.PAT }} | gh auth login --with-token
-          gh pr edit ${{needs.get_pr_details.outputs.PR_NUMBER}} --add-label "demo"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --add-label "demo"
         # echo GH_TOKEN=
         # filterArr=("aocc")
         # gh auth login --with-token < <(echo ${{ secrets.PAT }})
