@@ -4,8 +4,8 @@ on:
   issue_comment:
     types: [created, edited]
 
-# env:
-#   GH_TOKEN: ${{ secrets.PAT }}
+env:
+  GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
   get_branch_name:
