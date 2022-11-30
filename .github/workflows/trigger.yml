@@ -57,6 +57,7 @@ jobs:
 
       - name: Add label
         run: |
+          echo GH_TOKEN=
           filterArr=("aocc")
           gh auth login --with-token < <(echo ${{ secrets.PAT }})
           for t in $filterArr;
