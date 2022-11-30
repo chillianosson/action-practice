@@ -58,7 +58,7 @@ jobs:
       - name: Add label
         run: |
           gh auth setup-git -h github.com
-          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --add-label "demo"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --add-label "demo-available"
         # echo GH_TOKEN=
         # filterArr=("aocc")
         # gh auth login --with-token < <(echo ${{ secrets.PAT }})
