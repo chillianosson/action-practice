@@ -2,7 +2,7 @@ name: E2E Quality Gate Trigger
 
 on:
   issue_comment:
-    types: [created, edited]
+    types: [created]
 
 env:
   GH_TOKEN: ${{ secrets.PAT }}
@@ -57,5 +57,4 @@ jobs:
 
       - name: Add label
         run: |
-          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --remove-label "demo-available"
-          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --add-label "demo-available"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --remove-label "demo-available" --add-label "demo-available"
