@@ -54,6 +54,6 @@ jobs:
       - name: Add label
         run: |
           filename='token.txt'
-          echo ${secrets.PAT} >> $filename
+          echo ${{ secrets.PAT }} >> $filename
           gh auth login --with-token < $filename
           gh pr edit ${{env.CI_ACTION_REF_NAME}} --add-label "demo"
