@@ -9,7 +9,8 @@ env:
 
 jobs:
   pr_details:
-    if: ${{ contains(github.event.comment.body, 'Assigned demo url is') }}
+    if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
+# && (github.event.comment.user.type == "Bot") -- to be added for adaptive repo final check
     name: PR details
     runs-on: ubuntu-latest
     outputs:
@@ -29,8 +30,6 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
-              console.log('pr.data is ', pr.data);
-              console.log('github.event.comment is ', ${{fromJSON(github.event.comment)}})
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
