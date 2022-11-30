@@ -54,7 +54,7 @@ jobs:
 
       - name: Add label
         run: |
-          gh pr edit ${{needs.get_pr_details.outputs.PR_URL}} --add-label "demo"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_URL}} --add-label 'demo'
       # gh auth status
       # export GH_TOKEN=
       # gh auth status
