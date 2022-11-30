@@ -37,20 +37,21 @@ jobs:
       - name: Set details
         id: set-details
         run: |
-          echo "BRANCH=${{ fromJSON(steps.get-pr-data.outputs.result).head.ref }}" >> $GITHUB_ENV
-          echo "PR_NUMBER=${{ fromJSON(steps.get-pr-data.outputs.result).number }}" >> $GITHUB_ENV
+          echo "BRANCH=${{ fromJSON(steps.get-pr-data.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
+          echo "PR_NUMBER=${{ fromJSON(steps.get-pr-data.outputs.result).number }}" >> $GITHUB_OUTPUT
 
   set_demo_available_label:
     name: Set demo available label
     runs-on: ubuntu-latest
+    needs: [get_pr_details]
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.BRANCH }}
+          ref: ${{ needs.get_pr_details.outputs.BRANCH }}
           token: ${{ secrets.PAT }}
 
       - name: Add label
         run: |
-          gh pr edit ${{env.PR_NUMBER}} --remove-label "demo-available"
-          gh pr edit ${{env.PR_NUMBER}} --add-label "demo-available"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_NUMBER}} --remove-label "demo-available"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_NUMBER}} --add-label "demo-available"
