@@ -10,7 +10,7 @@ env:
 jobs:
   get_pr_details:
     if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
-    # && (github.event.comment.user.type == "Bot") -- to be added for adaptive repo final check
+    # && (github.event.comment.user.type == 'Bot') -- to be added for adaptive repo final check
     name: PR and Branch Name
     runs-on: ubuntu-latest
     outputs:
@@ -51,13 +51,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ needs.get_pr_details.outputs.PR_BRANCH }}
+          token: ${{ secrets.PAT }}
 
       - name: Add label
         run: |
+          gh auth login --with-token < <(echo ${{ secrets.AREA_RC_TOKEN }})
           gh pr edit ${{needs.get_pr_details.outputs.PR_URL}} --add-label 'demo'
-      # gh auth status
-      # export GH_TOKEN=
-      # gh auth status
-      # filename='token.txt'
-      # echo ${{ secrets.PAT }} >> $filename
-      # gh auth login --with-token < $filename
