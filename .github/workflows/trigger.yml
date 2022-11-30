@@ -10,7 +10,7 @@ env:
 jobs:
   pr_details:
     if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
-# && (github.event.comment.user.type == "Bot") -- to be added for adaptive repo final check
+    # && github.event.comment.user.type == 'Bot'
     name: PR details
     runs-on: ubuntu-latest
     outputs:
@@ -38,6 +38,7 @@ jobs:
       - name: Set variables in environment
         id: set-variables
         run: |
+          echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
           echo "ISSUE=${{ fromJSON(steps.get-pr.outputs.result).number }}" >> $GITHUB_OUTPUT
 
@@ -58,5 +59,4 @@ jobs:
         run: |
           LABEL='demo-available'
           echo $LABEL
-          gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --remove-label $LABEL
-          gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label $LABEL
+          gh pr edit ${{needs.pr_details.outputs.REPO}} --add-label $LABEL
