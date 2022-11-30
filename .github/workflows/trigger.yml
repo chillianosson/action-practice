@@ -64,6 +64,13 @@ jobs:
       - name: Add label
         if: ${{env.CI_ACTION_REF_NAME != 'master' && !startsWith(env.CI_ACTION_REF_NAME, 'release') }}
         run: |
-          export GITHUB_TOKEN=
-          gh auth login --with-token < <(echo ${{ secrets.PAT }})
-          gh pr edit ${{env.CI_ACTION_REF_NAME}} --add-label "demo-available-cillian"
+          set -u
+          echo "$GITHUB_TOKEN" > .githubtoken
+          unset GITHUB_TOKEN
+          gh auth login --with-token < .githubtoken
+          rm .githubtoken
+          gh pr edit ${{env.CI_ACTION_REF_NAME}} --add-label "demo-available-cillian
+
+        # echo "$GITHUB_TOKEN" > .githubtoken
+        # unset GITHUB_TOKEN
+        # gh auth login --with-token < <(echo ${{ secrets.PAT }})
