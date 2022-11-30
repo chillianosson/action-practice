@@ -1,30 +1,15 @@
 name: Quality gate
 
 on:
-  issues:
-    types:
-      - labeled
+  pull_request:
+    types: [labeled]
 
 jobs:
   run_quality_gate:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-    # id: quality-gate
-    # if: ${{ contains(github.event.label.name, 'demo-available') }}
+    if: ${{ contains(github.event.label.name, 'demo-available') }}
     steps:
     - name: Run tests
       run: echo Hello, world, quality gate can run
-
-# on:
-#   workflow_dispatch:
-
-# jobs:
-#   run_quality_gate:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Run a one-line script
-#         env:
-#           GH_TOKEN: ${{ secrets.OBG_GHACTION_TOKEN }}
-#         run: echo Hello, world, quality gate can run
