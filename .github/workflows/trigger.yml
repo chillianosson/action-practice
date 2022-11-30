@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       PR_BRANCH: ${{ steps.get-branch.outputs.PR_BRANCH }}
+      PR_URL: ${{ steps.get-branch.outputs.PR_URL }}
     steps:
       - name: Get Pr data
         id: get-pr
