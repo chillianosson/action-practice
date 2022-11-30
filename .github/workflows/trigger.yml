@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       PR_BRANCH: ${{ steps.get-branch.outputs.PR_BRANCH }}
-      PR_URL: ${{ steps.get-branch.outputs.PR_URL }}
+      PR_NUMBER: ${{ steps.get-branch.outputs.PR_NUMBER }}
     steps:
       - name: Get Pr data
         id: get-pr
@@ -57,5 +57,5 @@ jobs:
 
       - name: Add label
         run: |
-          gh pr edit ${{needs.get_pr_details.outputs.PR_URL}} --add-label 'demo'
+          gh pr edit ${{needs.get_pr_details.outputs.PR_NUMBER}} --add-label 'demo'
         # gh auth login --with-token < <(echo ${{ secrets.PAT }})
