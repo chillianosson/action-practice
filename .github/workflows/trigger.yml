@@ -29,6 +29,7 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
+              console.log('pr.data.url', pr.data.url)
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
@@ -38,7 +39,7 @@ jobs:
         id: get-branch
         run: |
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
-          echo "PR_URL=${{ fromJSON(steps.get-pr.outputs.result).url }}"
+          echo "PR_URL=${{ fromJSON(steps.get-pr.outputs.result).url }}" >> $GITHUB_OUTPUT
 
   set_ready_label:
     name: Set ready label
