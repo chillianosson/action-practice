@@ -52,7 +52,6 @@ jobs:
     steps:
       - name: Setup useful environment variables
         uses: FranzDiebold/github-env-vars-action@v2
-        run: |
           echo "CI_REPOSITORY_SLUG=$Env:CI_REPOSITORY_SLUG"
           echo "CI_REPOSITORY_OWNER=$Env:CI_REPOSITORY_OWNER"
           echo "CI_REPOSITORY_OWNER_SLUG=$Env:CI_REPOSITORY_OWNER_SLUG"
