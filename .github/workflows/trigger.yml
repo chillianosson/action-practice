@@ -40,7 +40,8 @@ jobs:
           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
           echo "ISSUE=${{ fromJSON(steps.get-pr.outputs.result).number }}" >> $GITHUB_OUTPUT
-          echo "LABEL_NAME=${{ ('demo-available-' + fromJSON(steps.get-pr.outputs.result).head.ref).slice(0,50) }}"
+
+       # echo "LABEL_NAME=${{ ('demo-available-' + fromJSON(steps.get-pr.outputs.result).head.ref).slice(0,50) }}"
 
   set_ready_label:
     name: Set ready label
@@ -57,7 +58,7 @@ jobs:
 
       - name: Add label
         run: |
-          LABEL='${{needs.pr_details.outputs.LABEL_NAME}}'
+          LABEL='anything'
           echo $LABEL
           gh label create $LABEL -f -c "blue"
           gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --remove-label $LABEL
