@@ -30,6 +30,7 @@ jobs:
             try {
               const pr = await github.pulls.get(prRequest)
               console.log('pr.data is ', pr.data);
+              console.log('github.event.comment is ', ${{github.event.comment}})
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
