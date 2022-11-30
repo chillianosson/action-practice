@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-    if: ${{ contains(github.event.label.name, 'demo-available') }}
+    # if: ${{ contains(github.event.label.name, 'demo-available') }}
     steps:
     - name: Run tests
       run: echo Hello, world, quality gate can run
