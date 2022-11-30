@@ -54,7 +54,7 @@ jobs:
       - name: Add label
         run: |
           gh auth status
-          export GITHUB_TOKEN=
+          export GH_TOKEN=
           gh auth status
           filename='token.txt'
           echo ${{ secrets.PAT }} >> $filename
