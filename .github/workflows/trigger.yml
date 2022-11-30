@@ -38,7 +38,7 @@ jobs:
         id: set-variables
         run: |
           echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
-          echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
+          echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).number }}" >> $GITHUB_OUTPUT
 
   set_ready_label:
     name: Set ready label
