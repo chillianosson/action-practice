@@ -1,11 +1,8 @@
-name: Quality Gate Trigger
+name: E2E Quality Gate Trigger
 
 on:
   issue_comment:
     types: [created, edited]
-
-env:
-  GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
   pr_details:
@@ -17,9 +14,9 @@ jobs:
       PR_BRANCH: ${{ steps.set-variables.outputs.PR_BRANCH }}
       ISSUE: ${{ steps.set-variables.outputs.ISSUE }}
     steps:
-      - name: Get PR Branch
-        uses: actions/github-script@v3
+      - name: Get Pr Details
         id: get-pr
+        uses: actions/github-script@v3
         with:
           script: |
             const prRequest = {
@@ -29,7 +26,6 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
-              console.log('pr.data is ', pr.data);
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
