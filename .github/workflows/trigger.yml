@@ -57,4 +57,5 @@ jobs:
 
       - name: Add label
         run: |
+          gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --remove-label "demo-available"
           gh pr edit ${{needs.get_pr_details.outputs.PR_BRANCH}} --add-label "demo-available"
