@@ -5,7 +5,7 @@ on:
     types: [created, edited]
 
 env:
-  GITHUB-TOKEN: ${{ secrets.PAT }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   get_pr_details:
@@ -55,6 +55,5 @@ jobs:
 
       - name: Add label
         run: |
-          export GITHUB-TOKEN=
-          gh auth login --with-token < <(echo ${{ secrets.PAT }})
           gh pr edit ${{needs.get_pr_details.outputs.PR_URL}} --add-label 'demo'
+        # gh auth login --with-token < <(echo ${{ secrets.PAT }})
