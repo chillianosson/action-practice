@@ -29,6 +29,7 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
+              console.log('pr.data is ', pr.data);
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
@@ -37,11 +38,8 @@ jobs:
       - name: Set variables in environment
         id: set-variables
         run: |
-          echo "REPO=${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}" >> $GITHUB_OUTPUT
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
           echo "ISSUE=${{ fromJSON(steps.get-pr.outputs.result).number }}" >> $GITHUB_OUTPUT
-
-       # echo "LABEL_NAME=${{ ('demo-available-' + fromJSON(steps.get-pr.outputs.result).head.ref).slice(0,50) }}"
 
   set_ready_label:
     name: Set ready label
@@ -58,8 +56,7 @@ jobs:
 
       - name: Add label
         run: |
-          LABEL='anything'
+          LABEL='demo-available'
           echo $LABEL
-          gh label create $LABEL -f -c 0000ff
           gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --remove-label $LABEL
           gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label $LABEL
