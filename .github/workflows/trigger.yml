@@ -59,7 +59,6 @@ jobs:
         run: |
           LABEL='${{needs.pr_details.outputs.LABEL_NAME}}'
           echo $LABEL
-          gh label create $LABEL
+          gh label create $LABEL -f -c "blue"
           gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --remove-label $LABEL
           gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label $LABEL
-#         gh label create "${{ needs.pr_details.outputs.LABEL_NAME }}" -f -c "blue"
