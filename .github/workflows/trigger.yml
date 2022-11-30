@@ -2,7 +2,7 @@ name: E2E Quality Gate Trigger
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 env:
   GH_TOKEN: ${{ secrets.PAT }}
