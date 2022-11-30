@@ -8,10 +8,10 @@ env:
   GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-  get_branch_name:
+  get_pr_details:
     if: ${{ contains(github.event.comment.body, 'Assigned demo url is')  }}
     # && (github.event.comment.user.type == "Bot") -- to be added for adaptive repo final check
-    name: Branch Name
+    name: PR and Branch Name
     runs-on: ubuntu-latest
     outputs:
       PR_BRANCH: ${{ steps.get-branch.outputs.PR_BRANCH }}
@@ -28,7 +28,6 @@ jobs:
             }
             try {
               const pr = await github.pulls.get(prRequest)
-              console.log(pr.data)
               return pr.data
             } catch (err) {
               core.setFailed(`PR fetch request failed with error ${err}`)
@@ -38,11 +37,12 @@ jobs:
         id: get-branch
         run: |
           echo "PR_BRANCH=${{ fromJSON(steps.get-pr.outputs.result).head.ref }}" >> $GITHUB_OUTPUT
+          echo "PR_URL=${{ fromJSON(steps.get-pr.outputs.result).url }}"
 
   set_ready_label:
     name: Set ready label
     runs-on: ubuntu-latest
-    needs: [get_branch_name]
+    needs: [get_pr_details]
     steps:
       - name: Setup useful environment variables
         uses: FranzDiebold/github-env-vars-action@v2
@@ -50,11 +50,11 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.get_branch_name.outputs.PR_BRANCH }}
+          ref: ${{ needs.get_pr_details.outputs.PR_BRANCH }}
 
       - name: Add label
         run: |
-          gh pr edit ${{env.CI_ACTION_REF_NAME}} --add-label "demo"
+          gh pr edit ${{needs.get_pr_details.outputs.PR_URL}} --add-label "demo"
       # gh auth status
       # export GH_TOKEN=
       # gh auth status
