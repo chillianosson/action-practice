@@ -56,5 +56,7 @@ jobs:
 
       - name: Add label
         run: |
-          gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --remove-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
-          gh issue edit "${{ needs.pr_details.outputs.ISSUE }}" --add-label "demo-available-for-branch-${{ needs.pr_details.outputs.PR_BRANCH }}"
+          LABEL = echo "demo-available-${{ needs.pr_details.outputs.PR_BRANCH }}"
+          gh label create $LABEL
+          gh issue edit ${{ needs.pr_details.outputs.ISSUE }} --remove-label $LABEL
+          gh issue edit ${{ needs.pr_details.outputs.ISSUE }} --add-label $LABEL
