@@ -4,8 +4,10 @@ on:
   issue_comment:
     types: [created, edited]
 
+# env:
+  # GH_TOKEN: ${{ secrets.PAT }}
 env:
-  GH_TOKEN: ${{ secrets.PAT }}
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 jobs:
 #   pr_details:
