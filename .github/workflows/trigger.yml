@@ -18,20 +18,32 @@ env:
   GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-   set_demo_available_label:
-    name: Set demo available label
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.ref-name }}
-          token: ${{ secrets.PAT }}
-
-      - name: Add label
+  log-inputs:
+      name: Log inputs
+      runs-on: [self-hosted, ubuntu-latest, ondemand]
+      steps:
+      - name: Display inputs
         run: |
-          echo "ref name is ${{ github.event.inputs.ref-name }}"
-          echo "demo url is ${{ github.event.inputs.demo-url }}"
-          gh pr edit ${{github.event.inputs.pr-number}} --remove-label "demo-available"
-          gh pr edit ${{github.event.inputs.pr-number}} --add-label "demo-available"
+          echo '${{ toJson(github.event.inputs) }}'
+  #  set_demo_available_label:
+  #   name: Set demo available label
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: |
+  #         echo "ref-name: ${{ github.event.inputs.ref-name }}"
+  #         echo "pr-number: ${{ github.event.inputs.pr-number }}"
+  #         echo "demo-url: ${{ github.event.inputs.demo-url }}"
+
+  #     - name: Checkout branch
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: ${{ github.event.inputs.ref-name }}
+  #         token: ${{ secrets.PAT }}
+
+  #     - name: Add label
+  #       run: |
+  #         echo "ref name is ${{ github.event.inputs.ref-name }}"
+  #         echo "demo url is ${{ github.event.inputs.demo-url }}"
+  #         gh pr edit ${{github.event.inputs.pr-number}} --remove-label "demo-available"
+  #         gh pr edit ${{github.event.inputs.pr-number}} --add-label "demo-available"
 
