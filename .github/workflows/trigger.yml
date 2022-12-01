@@ -30,6 +30,7 @@ jobs:
 
       - name: Add label
         run: |
+          ref: ${{ github.event.inputs.ref_name }}
           echo "demo url is ${{ github.event.inputs.demo_url }}"
           gh pr edit ${{github.event.inputs.pr_number}} --remove-label "demo-available"
           gh pr edit ${{github.event.inputs.pr_number}} --add-label "demo-available"
