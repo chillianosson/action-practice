@@ -12,14 +12,21 @@ env:
   GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-  get_pr_info:
+  fetch_pr_info:
+    name: Get PR Info
     runs-on: ubuntu-latest
     steps:
-      - uses: jwalton/gh-find-current-pr@v1
-        id: findPr
-        with:
-          state: open
-        run: echo "Your PR is ${PR}"
-        if: success() && steps.findPr.outputs.number
-        env:
-          PR: ${{ steps.findPr.outputs.pr }}
+    - name: Fetch with 3rd party
+      uses: jwalton/gh-find-current-pr@v1
+      id: findPr
+
+  print_outcome:
+    name: Print print_outcome
+    runs-on: ubuntu-latest
+    needs: [fetch_pr_info]
+    steps:
+    - name: Print print_outcome
+      run: echo "Your PR is ${PR}"
+      if: success() && needs.fetch_pr_info.findPr.outputs.number
+      env:
+        PR: ${{ needs.fetch_pr_info.findPr.outputs.pr }}
