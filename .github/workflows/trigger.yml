@@ -17,12 +17,16 @@ on:
 env:
   GH_TOKEN: ${{ secrets.PAT }}
 
-
 jobs:
    set_demo_available_label:
     name: Set demo available label
     runs-on: ubuntu-latest
     steps:
+      - run: |
+          echo "ref-name: ${{ github.event.inputs.ref-name }}"
+          echo "pr-number: ${{ github.event.inputs.pr-number }}"
+          echo "demo-url: ${{ github.event.inputs.demo-url }}"
+
       - name: Checkout branch
         uses: actions/checkout@v3
         with:
