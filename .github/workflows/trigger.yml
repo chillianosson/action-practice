@@ -20,7 +20,7 @@ env:
 jobs:
   log-inputs:
       name: Log inputs
-      runs-on: [self-hosted, ubuntu-latest, ondemand]
+      runs-on: ubuntu-latest
       steps:
       - name: Display inputs
         run: |
