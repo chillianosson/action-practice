@@ -4,15 +4,16 @@ on:
   repository_dispatch:
     types: [demo_deploy_trigger_tests]
     inputs:
-      ref-name:
+      ref_name:
         description: Branch Reference from PR
         required: true
-      pr-number:
-        description: Pr Number
-        required: true
-      demo-url:
-        description: Demo Url
-        required: true
+        types: string
+      # pr-number:
+      #   description: Pr Number
+      #   required: true
+      # demo-url:
+      #   description: Demo Url
+      #   required: true
 
 env:
   GH_TOKEN: ${{ secrets.PAT }}
