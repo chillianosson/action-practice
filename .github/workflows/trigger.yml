@@ -7,32 +7,30 @@ on:
       ref_name:
         description: Branch Reference from PR
         required: true
+      pr_number:
+        description: Pr Number
+        required: true
+      demo_url:
+        description: Demo Url
+        required: true
 
 env:
   GH_TOKEN: ${{ secrets.PAT }}
 
 jobs:
-  fetch_pr_info:
-    name: Get PR Info
+   set_demo_available_label:
+    name: Set demo available label
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout branch
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.inputs.ref_name }}
-        token: ${{ secrets.PAT }}
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.ref_name }}
+          token: ${{ secrets.PAT }}
 
-    - name: Fetch with 3rd party
-      uses: jwalton/gh-find-current-pr@v1
-      id: findPr
+      - name: Add label
+        run: |
+          echo "demo url is ${{ github.event.inputs.demo_url }}"
+          gh pr edit ${{github.event.inputs.pr_number}} --remove-label "demo-available"
+          gh pr edit ${{github.event.inputs.pr_number}} --add-label "demo-available"
 
-  print_outcome:
-    name: Print print_outcome
-    runs-on: ubuntu-latest
-    needs: [fetch_pr_info]
-    steps:
-    - name: Print print_outcome
-      run: echo "Your PR is ${PR}"
-      if: success() && needs.fetch_pr_info.findPr.outputs.number
-      env:
-        PR: ${{ needs.fetch_pr_info.findPr.outputs.pr }}
