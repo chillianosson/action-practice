@@ -1,8 +1,15 @@
 name: E2E Quality Gate Trigger
 
 on:
-  issue_comment:
-    types: [created]
+  repository_dispatch:
+    types: [demo_deploy_trigger_tests]
+    inputs:
+      branch-ref:
+        description: Branch Reference from PR
+        required: true
+      pr-ref:
+        description: PR Reference
+        required: true
 
 env:
   GH_TOKEN: ${{ secrets.PAT }}
