@@ -4,13 +4,13 @@ on:
   repository_dispatch:
     types: [demo_deploy_trigger_tests]
     inputs:
-      ref_name:
+      ref-name:
         description: Branch Reference from PR
         required: true
-      pr_number:
+      pr-number:
         description: Pr Number
         required: true
-      demo_url:
+      demo-url:
         description: Demo Url
         required: true
 
@@ -25,13 +25,13 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.ref_name }}
+          ref: ${{ github.event.inputs.ref-name }}
           token: ${{ secrets.PAT }}
 
       - name: Add label
         run: |
-          echo "ref name is ${{ github.event.inputs.ref_name }}"
-          echo "demo url is ${{ github.event.inputs.demo_url }}"
-          gh pr edit ${{github.event.inputs.pr_number}} --remove-label "demo-available"
-          gh pr edit ${{github.event.inputs.pr_number}} --add-label "demo-available"
+          echo "ref name is ${{ github.event.inputs.ref-name }}"
+          echo "demo url is ${{ github.event.inputs.demo-url }}"
+          gh pr edit ${{github.event.inputs.pr-number}} --remove-label "demo-available"
+          gh pr edit ${{github.event.inputs.pr-number}} --add-label "demo-available"
 
