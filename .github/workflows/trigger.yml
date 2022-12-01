@@ -17,6 +17,7 @@ on:
 env:
   GH_TOKEN: ${{ secrets.PAT }}
 
+
 jobs:
    set_demo_available_label:
     name: Set demo available label
