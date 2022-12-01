@@ -16,6 +16,12 @@ jobs:
     name: Get PR Info
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout branch
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref_name }}
+        token: ${{ secrets.PAT }}
+
     - name: Fetch with 3rd party
       uses: jwalton/gh-find-current-pr@v1
       id: findPr
