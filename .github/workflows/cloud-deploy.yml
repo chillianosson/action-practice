@@ -1,11 +1,11 @@
 name: 'Cloud DEMO Deploy'
 
+on:
+  workflow_dispatch:
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
-
-on:
-  workflow_dispatch:
 
 jobs:
   deploy:
