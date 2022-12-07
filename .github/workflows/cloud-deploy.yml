@@ -16,7 +16,7 @@ jobs:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
       with:
-        token: ${{ secrets.PAT }}
+        # token: ${{ secrets.PAT }}
         repository: chillianosson/action-practice-2
         event-type: demo_deploy_trigger_tests
         client-payload: '{"ref_name": "my-branch-name-reference"}'
